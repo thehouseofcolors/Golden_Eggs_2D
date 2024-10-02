@@ -4,20 +4,18 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public float speed = 5f; // Speed for smooth movement
 
-    public float speed = 5f;
-    // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
-    // Update is called once per frame
     void Update()
     {
         Vector2 touchPosition = Vector2.zero;
 
-        // Dokunma veya mouse pozisyonunu al
+        // Get touch or mouse position
         if (Input.touchCount > 0)
         {
             touchPosition = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
@@ -27,8 +25,10 @@ public class Player : MonoBehaviour
             touchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         }
 
-        // Yalnýzca yatay eksende hareket
+        // Only move horizontally
         Vector2 newPosition = new Vector2(touchPosition.x, transform.position.y);
 
+        // Move the player to the new position
+        transform.position = Vector2.Lerp(transform.position, newPosition, speed * Time.deltaTime);
     }
 }
