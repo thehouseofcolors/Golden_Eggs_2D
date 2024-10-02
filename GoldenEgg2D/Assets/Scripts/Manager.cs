@@ -5,30 +5,29 @@ using UnityEngine;
 public class Manager : MonoBehaviour
 {
     public GameObject ChickenPrefab;
-    public GameObject RegularEggPrefab;
-    //public GameObject GoldenEggPrefab;
-
 
     public Transform PlayTilemap;     // Tavuklarýn ekleneceði Tilemap
-    
+    public GameObject RegularEggPrefab;
+    private Vector3 eggPos;
+    private List<GameObject> eggList = new List<GameObject>();
 
     private Vector3 chickenPos;
-    private Vector3 eggPos;
+    
 
     public float leftBoundary = -2f;  // Left boundary of movement
     public float rightBoundary = 2f;  // Right boundary of movement
     public float upperBoundary = 4f;
 
-    private List<GameObject> chickenList = new List<GameObject>();
-    private List<GameObject> eggList = new List<GameObject>();
+    public List<GameObject> chickenList = new List<GameObject>();
+    public List<GameObject> GetEggList() {  return eggList; }
+    public List<GameObject> GetChickenList() { return chickenList; }
 
 
     // Start is called before the first frame update
     void Start()
     {
-        GameObject chicken=SpawmChicken(1);
-
-        SpawmEgg(chicken);
+        SpawnChicken(1);
+        SpawnEgg();
 
     }
 
@@ -37,24 +36,31 @@ public class Manager : MonoBehaviour
     {
 
     }
-    public GameObject SpawmChicken(int level)
+    public GameObject SpawnChicken(int level)
     {
         chickenPos = new Vector3(0, upperBoundary-level, 0);
-        GameObject gameObject = Instantiate(ChickenPrefab, chickenPos, Quaternion.Euler(0, 90, 0));
-        gameObject.transform.SetParent(PlayTilemap);
-        chickenList.Add(gameObject);
-        return gameObject;
+        GameObject chicken = Instantiate(ChickenPrefab, chickenPos, Quaternion.Euler(0, 90, 0));
+        chicken.transform.SetParent(PlayTilemap);
+        chickenList.Add(chicken);
+        return chicken;
+    }
+    public void SpawnEgg()
+    {
+        Transform chickenTransform = GetRandomChickenTransform();
+        for (int i = 0; i < 3; i++)
+        {
+            eggPos = new Vector3(chickenTransform.position.x, chickenTransform.position.y + 0.5f, chickenTransform.position.z);
+
+            GameObject egg = Instantiate(RegularEggPrefab, eggPos, Quaternion.Euler(0, 0, 0));
+            egg.transform.SetParent(chickenTransform); // Ensure egg is parented to chicken
+            //egg.SetActive(false); // You might want to activate the egg later
+            eggList.Add(egg);
+        }
     }
 
-    public void SpawmEgg(GameObject chicken)
+    public Transform GetRandomChickenTransform()
     {
-        Vector3 eggPos = new Vector3(chicken.transform.position.x, chicken.transform.position.y , 0);
-
-        GameObject egg = Instantiate(RegularEggPrefab, eggPos, Quaternion.Euler(0, 0, 0));
-        egg.transform.SetParent(chicken.transform);
-
-        eggList.Add(egg);
-
+        return chickenList[0].transform;
     }
 
 }

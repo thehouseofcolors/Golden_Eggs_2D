@@ -10,4 +10,6 @@ public class RegularEgg : Egg
         eggScore = 1;           // Specific score for RegularEgg
         eggSpeed = 1.0f;       // Specific speed for RegularEgg
     }
+    
+
 }
