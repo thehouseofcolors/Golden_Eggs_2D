@@ -4,15 +4,10 @@ using UnityEngine;
 
 public class RegularEgg : Egg
 {
-    // Start is called before the first frame update
-    void Start()
+    public override void Initialize()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        type = EggType.Regular; // Specific to RegularEgg
+        eggScore = 1;           // Specific score for RegularEgg
+        eggSpeed = 1.0f;       // Specific speed for RegularEgg
     }
 }

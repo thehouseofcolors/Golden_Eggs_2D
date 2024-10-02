@@ -6,7 +6,8 @@ TagManager:
   tags:
   - Background
   - chicken
-  - player
+  - regular_egg
+  - play
   layers:
   - Default
   - TransparentFX
@@ -14,7 +15,7 @@ TagManager:
   - Background
   - Water
   - UI
-  - chicken
+  - 
   - player
   - 
   - 
