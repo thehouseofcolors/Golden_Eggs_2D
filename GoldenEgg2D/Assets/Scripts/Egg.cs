@@ -18,26 +18,25 @@ public abstract class Egg : MonoBehaviour
     }
     public abstract void Initialize();
     
-    public void OnGroundHit()
-    {
-        // Logic when the egg hits the ground, e.g., deactivate or reset position
-        EggPoolManager eggPoolManager = FindObjectOfType<EggPoolManager>();
-        eggPoolManager.AssignEggToRandomChicken(this);
-    }
+    
 
 
     public EggType GetEggType() => type;
     public int GetEggScore() => eggScore;
     public float GetEggSpeed() => eggSpeed;
 
-    private void OnCollisionEnter(Collision collision)
+    public void OnGroundHit()
     {
-        // Check if the egg has collided with the ground
-        if (collision.gameObject.CompareTag("Ground")) // Make sure your ground has the tag "Ground"
+        // Logic when the egg hits the ground, e.g., deactivate or reset position
+        EggPoolManager eggPoolManager = FindObjectOfType<EggPoolManager>();
+        eggPoolManager.AssignEggToRandomChicken(this);
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground")) 
         {
-            OnGroundHit();  
+            OnGroundHit();
         }
     }
-
 
 }

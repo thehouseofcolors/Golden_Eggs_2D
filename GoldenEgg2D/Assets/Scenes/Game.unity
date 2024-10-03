@@ -154,7 +154,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ChickenPrefab: {fileID: 1206511787925574, guid: 3b1e3e9155d404942bc65d9aa80120ba, type: 3}
   PlayTilemap: {fileID: 1098408808}
-  RegularEggPrefab: {fileID: 3870152455136529767, guid: 6dcec8e943bd2e8429097721a3710e51, type: 3}
+  RegularEggPrefab: {fileID: 4628658415589742160, guid: 3cc08c93e8305c8478fcf1783fcb7ec2, type: 3}
   leftBoundary: -2
   rightBoundary: 2
   upperBoundary: 4
@@ -1679,7 +1679,6 @@ GameObject:
   - component: {fileID: 1724533261}
   - component: {fileID: 1724533264}
   - component: {fileID: 1724533263}
-  - component: {fileID: 1724533266}
   - component: {fileID: 1724533265}
   m_Layer: 7
   m_Name: Cube
@@ -1798,33 +1797,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!50 &1724533266
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1724533260}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 0.0001
-  m_LinearDrag: 0
-  m_AngularDrag: 0
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!1 &1750260149
 GameObject:
   m_ObjectHideFlags: 0
