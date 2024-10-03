@@ -52,8 +52,8 @@ public class Manager : MonoBehaviour
             eggPos = new Vector3(chickenTransform.position.x, chickenTransform.position.y + 0.5f, chickenTransform.position.z);
 
             GameObject egg = Instantiate(RegularEggPrefab, eggPos, Quaternion.Euler(0, 0, 0));
-            egg.transform.SetParent(chickenTransform); // Ensure egg is parented to chicken
-            //egg.SetActive(false); // You might want to activate the egg later
+            egg.transform.SetParent(chickenTransform); 
+            egg.SetActive(false);
             eggList.Add(egg);
         }
     }

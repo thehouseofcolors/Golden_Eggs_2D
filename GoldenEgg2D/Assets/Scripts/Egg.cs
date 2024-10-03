@@ -29,7 +29,13 @@ public abstract class Egg : MonoBehaviour
     {
         // Logic when the egg hits the ground, e.g., deactivate or reset position
         EggPoolManager eggPoolManager = FindObjectOfType<EggPoolManager>();
-        eggPoolManager.AssignEggToRandomChicken(this);
+        eggPoolManager.ReAssignEgg(this);
+    }
+    public void EggCaught()
+    {
+        EggPoolManager eggPoolManager = FindObjectOfType<EggPoolManager>();
+        eggPoolManager.ReAssignEgg(this);
+        Debug.Log("egg caught");
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -37,6 +43,14 @@ public abstract class Egg : MonoBehaviour
         {
             OnGroundHit();
         }
-    }
+        
 
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            EggCaught();
+        }
+    }
 }
