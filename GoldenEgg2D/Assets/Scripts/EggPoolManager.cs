@@ -17,7 +17,7 @@ public class EggPoolManager : MonoBehaviour
         DropEgg();
         StartCoroutine(DropEggsRoutine());
     }
-    private IEnumerator DropEggsRoutine()
+    private IEnumerator DropEggsRoutine_()
     {
         while (true)
         {
