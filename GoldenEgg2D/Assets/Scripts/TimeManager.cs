@@ -9,21 +9,16 @@ public class TimeManager : MonoBehaviour
 {
     public TextMeshProUGUI timeText;
 
-    private float timeRemaining = 30f;
-    private bool isPlaying = false;
+    private float timeRemaining = 10f;
+    
+    private LevelManager levelManager;
 
-    // Start is called before the first frame update
     void Start()
     {
         StartCoroutine(TimerCoroutine());
-
+        levelManager=FindObjectOfType<LevelManager>();  
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     private IEnumerator TimerCoroutine()
     {
         while (timeRemaining > 0)
@@ -32,7 +27,7 @@ public class TimeManager : MonoBehaviour
             yield return new WaitForSeconds(1f); // Her saniye bir kez güncelle
             timeRemaining -= 1f;
         }
-        //EndGame();
+        levelManager.UpdateGameLevel();
     }
     private void DisplayTime()
     {
@@ -42,4 +37,6 @@ public class TimeManager : MonoBehaviour
 
         }
     }
+    
+
 }

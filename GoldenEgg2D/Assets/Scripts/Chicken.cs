@@ -8,15 +8,10 @@ public class Chicken : MonoBehaviour
 
     private bool movingRight;
 
-    void Start()
-    {
-
-    }
 
     void Update()
     {
         Movement();
-        
         
     }
     private void GoLeft()
@@ -33,7 +28,6 @@ public class Chicken : MonoBehaviour
     private void Movement()
     {
         
-        // Yön kontrolüne göre hareket et
         if (movingRight)
         {
             GoRight();
@@ -45,10 +39,8 @@ public class Chicken : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // Duvara çarpma durumu
         if (collision.gameObject.CompareTag("play"))
         {
-            // Yönü deðiþtir
             movingRight = !movingRight;
         }
     }

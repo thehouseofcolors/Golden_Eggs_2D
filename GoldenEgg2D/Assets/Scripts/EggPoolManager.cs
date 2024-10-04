@@ -7,6 +7,7 @@ public class EggPoolManager : MonoBehaviour
     public GameObject managerObject; // Assign the GameObject that has the Manager script
     private Manager manager;
 
+    private Coroutine dropEggsCoroutine; // Store reference to the coroutine
 
     public List<GameObject> eggList;
     public List<GameObject> chickenList;
@@ -16,7 +17,7 @@ public class EggPoolManager : MonoBehaviour
         eggList = manager.GetEggList();
         chickenList= manager.GetChickenList();
 
-        StartCoroutine(DropEggsRoutine());
+        dropEggsCoroutine = StartCoroutine(DropEggsRoutine());
     }
     
     private IEnumerator DropEggsRoutine()
@@ -67,6 +68,13 @@ public class EggPoolManager : MonoBehaviour
         }
         return null;
     }
-
+    public void StopDroping()
+    {
+        if (dropEggsCoroutine != null) // Ensure the coroutine reference is not null
+        {
+            StopCoroutine(dropEggsCoroutine); // Stop the coroutine using the reference
+            dropEggsCoroutine = null; // Reset the reference
+        }
+    }
 }
 

@@ -6,7 +6,7 @@ public class Manager : MonoBehaviour
 {
     public GameObject ChickenPrefab;
 
-    public Transform PlayTilemap;     // Tavuklarýn ekleneceði Tilemap
+    public Transform PlayTilemap;     
     public GameObject RegularEggPrefab;
     private Vector3 eggPos;
     private List<GameObject> eggList = new List<GameObject>();
@@ -14,28 +14,25 @@ public class Manager : MonoBehaviour
     private Vector3 chickenPos;
     
 
-    public float leftBoundary = -2f;  // Left boundary of movement
-    public float rightBoundary = 2f;  // Right boundary of movement
+    public float leftBoundary = -2f; 
+    public float rightBoundary = 2f;  
     public float upperBoundary = 4f;
 
-    public List<GameObject> chickenList = new List<GameObject>();
+    public List<GameObject> chickenList;
     public List<GameObject> GetEggList() {  return eggList; }
     public List<GameObject> GetChickenList() { return chickenList; }
 
+    private EggPoolManager EggPoolManager;
 
     // Start is called before the first frame update
     void Start()
     {
         SpawnChicken(1);
+        chickenList = GetChickenList();
         SpawnEgg();
-
+        EggPoolManager=FindObjectOfType<EggPoolManager>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
     public GameObject SpawnChicken(int level)
     {
         chickenPos = new Vector3(0, upperBoundary-level, 0);
@@ -60,7 +57,23 @@ public class Manager : MonoBehaviour
 
     public Transform GetRandomChickenTransform()
     {
-        return chickenList[0].transform;
+        return chickenList[Random.Range(0,chickenList.Count)].transform;
+    }
+
+    public void StopGame()
+    {
+        EggPoolManager.StopDroping();
+
+        foreach (GameObject chicken in chickenList)
+        {
+            chicken.SetActive(false);
+        }
+
+        foreach (GameObject egg in eggList)
+        {
+            egg.SetActive(false);
+        }
+
     }
 
 }

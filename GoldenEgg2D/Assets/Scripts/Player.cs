@@ -6,10 +6,6 @@ public class Player : MonoBehaviour
 {
     public float speed = 5f; // Speed for smooth movement
 
-    void Start()
-    {
-
-    }
 
     void Update()
     {
