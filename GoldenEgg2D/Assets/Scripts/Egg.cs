@@ -8,13 +8,15 @@ public abstract class Egg : MonoBehaviour
     protected EggType type;
     protected int eggScore;
     protected float eggSpeed;
-
+    protected ScoreManager scoreManager;
+    
     public enum EggType { Regular, Golden, Diamond }
 
     private void Awake()
     {
         DontDestroyOnLoad(this.gameObject); 
         Initialize();
+        scoreManager = FindObjectOfType<ScoreManager>();
     }
     public abstract void Initialize();
     
@@ -36,6 +38,7 @@ public abstract class Egg : MonoBehaviour
         EggPoolManager eggPoolManager = FindObjectOfType<EggPoolManager>();
         eggPoolManager.ReAssignEgg(this);
         Debug.Log("egg caught");
+        
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -51,6 +54,7 @@ public abstract class Egg : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             EggCaught();
+            scoreManager.UpdateScore(GetEggScore());
         }
     }
 }
