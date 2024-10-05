@@ -15,7 +15,8 @@ public class ScoreManager : MainManager
 
     public void Initialize()
     {
-        score = 0; 
+        score = 0;
+        DisplayScore();
     }
 
     protected int GetScore() => score;
