@@ -29,9 +29,10 @@ public class MainManager : MonoBehaviour
     protected TimeManager timeManager;
 
     protected GameObject Player;
-    private GameObject chickenPrefab;
-    private GameObject regularEggPrefab;
-    private GameObject goldenEggPrefab;
+    [SerializeField] private GameObject PlayerPrefab;
+    [SerializeField] private GameObject chickenPrefab;
+    [SerializeField] private GameObject regularEggPrefab;
+    [SerializeField] private GameObject goldenEggPrefab;
 
     protected List<GameObject> gameObjects;
     protected List<GameObject> chickenList;
