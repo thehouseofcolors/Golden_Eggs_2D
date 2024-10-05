@@ -9,13 +9,8 @@ public class ScoreManager : MonoBehaviour
 {
     public TextMeshProUGUI scoreText;
     
-    private int score;
+    private int score=0;
 
-
-    void Start()
-    {
-        score = 0;
-    }
 
     public void UpdateScore(int add)
     {

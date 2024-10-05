@@ -4,25 +4,23 @@ using System.Collections;
 
 public class EggPoolManager : MonoBehaviour
 {
-    public GameObject managerObject; // Assign the GameObject that has the Manager script
     private Manager manager;
 
-    private Coroutine dropEggsCoroutine; // Store reference to the coroutine
+    private GameState gameState;
 
-    public List<GameObject> eggList;
-    public List<GameObject> chickenList;
-    void Start()
-    {
-        manager = managerObject.GetComponent<Manager>();
-        eggList = manager.GetEggList();
-        chickenList= manager.GetChickenList();
+    private Coroutine dropEggsCoroutine; 
 
-        dropEggsCoroutine = StartCoroutine(DropEggsRoutine());
-    }
+    private List<GameObject> eggList;
+    private List<GameObject> chickenList;
+    
     
     private IEnumerator DropEggsRoutine()
     {
-        while (true)
+
+        manager = FindObjectOfType<Manager>();
+        eggList = manager.GetEggList();
+
+        while (gameState == GameState.Playing)
         {
             foreach (GameObject egg in eggList)
             {
@@ -47,6 +45,7 @@ public class EggPoolManager : MonoBehaviour
 
     }
     
+
     public void ReAssignEgg(Egg egg)
     {
 
@@ -61,6 +60,8 @@ public class EggPoolManager : MonoBehaviour
     }
     public Transform GetRandomChickenTransform()
     {
+        chickenList = manager.GetChickenList();
+
         if (chickenList.Count > 0)
         {
             int randomIndex = Random.Range(0, chickenList.Count);
@@ -68,13 +69,25 @@ public class EggPoolManager : MonoBehaviour
         }
         return null;
     }
+
+
+    public void StartDroping()
+    {
+
+        if (dropEggsCoroutine == null) 
+        {
+            dropEggsCoroutine = StartCoroutine(DropEggsRoutine());
+        }
+        
+    }
     public void StopDroping()
     {
-        if (dropEggsCoroutine != null) // Ensure the coroutine reference is not null
+        if (dropEggsCoroutine != null) 
         {
-            StopCoroutine(dropEggsCoroutine); // Stop the coroutine using the reference
-            dropEggsCoroutine = null; // Reset the reference
+            StopCoroutine(dropEggsCoroutine); 
+            dropEggsCoroutine = null; 
         }
     }
+    
 }
 
