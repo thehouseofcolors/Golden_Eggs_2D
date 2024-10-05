@@ -1,24 +1,67 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class UI_Manager : MonoBehaviour
+
+public class UI_Manager : Main_Manager
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private CanvasGroup Entry;
+    [SerializeField] private CanvasGroup Play;
+    [SerializeField] private CanvasGroup Pause;
+
+    [SerializeField] private GameObject entry;
+
+    [SerializeField] private GameObject play;
+
+    [SerializeField] private GameObject pause;
+
+    private Main_Manager mainManager;
+
+    private void Start()
     {
-        
+        mainManager = FindObjectOfType<Main_Manager>();
+        Entry= entry.GetComponent<CanvasGroup>();
+        Play=play.GetComponent <CanvasGroup>();
+        Pause=pause.GetComponent<CanvasGroup>();
+
+
+        mainManager.gameStatusChanged += UpdateUI;
+    }
+    private void OnEnable()
+    {
+        mainManager.gameStatusChanged += UpdateUI;
+    }
+    private void OnDestroy()
+    {
+        mainManager.gameStatusChanged -= UpdateUI;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void UpdateUI(GameStatus status)
     {
-        
+        switch (status)
+        {
+            case GameStatus.Entry:
+                ShowCanvas(Entry);
+                HideCanvas(Play);
+                HideCanvas(Pause);
+                break;
+            case GameStatus.Playing:
+                ShowCanvas(Play);
+                HideCanvas(Entry);
+                HideCanvas(Pause);
+                break;
+            case GameStatus.Paused:
+                ShowCanvas(Pause);
+                HideCanvas(Play);
+                HideCanvas(Entry);
+                break;
+        }
     }
-    public CanvasGroup canvasGroup;  // CanvasGroup referansý
+    
 
     // Canvas'ý tamamen görünür yapar
-    public void ShowCanvas()
+    public void ShowCanvas(CanvasGroup canvasGroup)
     {
         canvasGroup.alpha = 1;        // Þeffaflýðý kaldýrýr (görünür yapar)
         canvasGroup.interactable = true;  // UI elemanlarýnýn etkileþimini açar
@@ -26,7 +69,7 @@ public class UI_Manager : MonoBehaviour
     }
 
     // Canvas'ý þeffaf yapar (gizli)
-    public void HideCanvas()
+    public void HideCanvas(CanvasGroup canvasGroup)
     {
         canvasGroup.alpha = 0;        // Þeffaf yapar (gizli)
         canvasGroup.interactable = false; // UI elemanlarýnýn etkileþimini kapatýr

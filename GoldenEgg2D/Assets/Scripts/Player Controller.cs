@@ -4,15 +4,56 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private Main_Manager main_manager;
+
+    public float speed = 5f; 
+    private void Start()
     {
-        
+        main_manager = FindObjectOfType<Main_Manager>();
+    }
+    private void Update()
+    {
+        Vector2 touchPosition = Vector2.zero;
+
+        if (Input.touchCount > 0)
+        {
+            touchPosition = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
+        }
+        else if (Input.GetMouseButton(0))
+        {
+            touchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        }
+
+        Vector2 newPosition = new Vector2(touchPosition.x, transform.position.y);
+
+        transform.position = Vector2.Lerp(transform.position, newPosition, speed * Time.deltaTime);
+    }
+    private void OnEnable()
+    {
+        main_manager.gameStatusChanged += UpdatePlayer;
+
+    }
+    private void OnDestroy()
+    {
+        main_manager.gameStatusChanged -= UpdatePlayer;
+
     }
 
-    // Update is called once per frame
-    void Update()
+
+    
+    public void UpdatePlayer(GameStatus status)
     {
-        
+        switch (status)
+        {
+            case GameStatus.Entry:
+                gameObject.SetActive(false);
+                break;
+            case GameStatus.Playing:
+                gameObject.SetActive(true);
+                break;
+            case GameStatus.Paused:
+                gameObject.SetActive(false);
+                break;
+        }
     }
 }
