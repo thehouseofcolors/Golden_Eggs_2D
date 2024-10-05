@@ -5,9 +5,10 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class ScoreManager : MonoBehaviour
+public class ScoreManager : MainManager
 {
     public TextMeshProUGUI scoreText;
+<<<<<<< Updated upstream
     
     private int score;
 
@@ -21,12 +22,23 @@ public class ScoreManager : MonoBehaviour
     {
         score += add;
         DisplayScore();
+=======
+    private int score = 0;
+
+
+
+    protected int GetScore() => score;
+    protected void UpdateScore(int scoreToAdd)
+    { 
+        score += scoreToAdd; 
+        DisplayScore(); 
+>>>>>>> Stashed changes
     }
-    private void DisplayScore()
+
+    protected void DisplayScore()
     {
         scoreText.text = "Score: " + score;
 
     }
-
 
 }

@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 
-public abstract class Egg : MonoBehaviour
+public abstract class Egg : MainManager
 {
     protected EggType type;
     protected int eggScore;
     protected float eggSpeed;
-    protected ScoreManager scoreManager;
     
     public enum EggType { Regular, Golden, Diamond }
 
@@ -16,8 +15,8 @@ public abstract class Egg : MonoBehaviour
     {
         DontDestroyOnLoad(this.gameObject); 
         Initialize();
-        scoreManager = FindObjectOfType<ScoreManager>();
     }
+
     public abstract void Initialize();
     
     
@@ -29,15 +28,12 @@ public abstract class Egg : MonoBehaviour
 
     public void OnGroundHit()
     {
-        // Logic when the egg hits the ground, e.g., deactivate or reset position
-        EggPoolManager eggPoolManager = FindObjectOfType<EggPoolManager>();
-        eggPoolManager.ReAssignEgg(this);
+
     }
+
+
     public void EggCaught()
     {
-        EggPoolManager eggPoolManager = FindObjectOfType<EggPoolManager>();
-        eggPoolManager.ReAssignEgg(this);
-        Debug.Log("egg caught");
         
     }
     private void OnCollisionEnter2D(Collision2D collision)
@@ -54,7 +50,6 @@ public abstract class Egg : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             EggCaught();
-            scoreManager.UpdateScore(GetEggScore());
         }
     }
 }

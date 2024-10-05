@@ -6,11 +6,14 @@ public class Player : MonoBehaviour
 {
     public float speed = 5f; // Speed for smooth movement
 
+<<<<<<< Updated upstream
     void Start()
     {
 
     }
 
+=======
+>>>>>>> Stashed changes
     void Update()
     {
         Vector2 touchPosition = Vector2.zero;
