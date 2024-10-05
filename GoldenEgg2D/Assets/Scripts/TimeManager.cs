@@ -4,50 +4,19 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-
 public class TimeManager : MainManager
 {
-    public TextMeshProUGUI timeText;
-    private int remainingTime;
-    private Coroutine timerCoroutine;
+    public TextMeshProUGUI timeText; // Zamaný gösterecek TextMeshPro öðesi
+    private int remainingTime; // Geri sayým süresi
+    private Coroutine timerCoroutine; // Timer coroutine'i
 
-<<<<<<< Updated upstream
-    private float timeRemaining = 30f;
-    private bool isPlaying = false;
+    
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        StartCoroutine(TimerCoroutine());
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-    private IEnumerator TimerCoroutine()
-    {
-        while (timeRemaining > 0)
-        {
-            timeText.text = "Time: " + Mathf.Round(timeRemaining).ToString();
-            yield return new WaitForSeconds(1f); // Her saniye bir kez güncelle
-            timeRemaining -= 1f;
-        }
-        //EndGame();
-    }
-    private void DisplayTime()
-    {
-        if (timeText != null)
-        {
-            timeText.text = "Time: " + timeRemaining.ToString();
-
-=======
     public void Initialize()
     {
-        remainingTime = 30;
+        remainingTime = 30; // Baþlangýç süresi
     }
+
     public override void OnStartButtonPressed()
     {
         StartTimer();
@@ -57,9 +26,10 @@ public class TimeManager : MainManager
     {
         StopTimer();
     }
+
     protected void StartTimer()
     {
-        if (status==GameStatus.playing)
+        if (status == GameStatus.playing && timerCoroutine == null) // Timer zaten çalýþmýyorsa baþlat
         {
             timerCoroutine = StartCoroutine(TimerCoroutine());
         }
@@ -67,37 +37,30 @@ public class TimeManager : MainManager
 
     protected void StopTimer()
     {
-        if (status==GameStatus.pause)
+        if (status == GameStatus.pause && timerCoroutine != null)
         {
-            if (timerCoroutine != null)
-            {
-                StopCoroutine(timerCoroutine);  // Coroutine'i durdurur
-            }
+            StopCoroutine(timerCoroutine); // Coroutine'i durdur
+            timerCoroutine = null; // Coroutine referansýný sýfýrla
         }
     }
+
     private IEnumerator TimerCoroutine()
     {
         while (remainingTime > 0)
         {
             remainingTime -= 1; // Her saniye zamaný 1 azalt
-            DisplayTime();  // Zamaný ekranda günceller
-            yield return new WaitForSeconds(1f);  // 1 saniye bekler
->>>>>>> Stashed changes
+            DisplayTime(); // Zamaný ekranda günceller
+            yield return new WaitForSeconds(1f); // 1 saniye bekler
         }
 
-        remainingTime = 0;
-        DisplayTime();  // Zaman sýfýr olduðunda güncellenmiþ süreyi göster
-        StopTimer();  // Timer bittiðinde durdur
-        Debug.Log("Zaman doldu!");  // Zamanýn bittiði mesajý
+        remainingTime = 0; // Süre sýfýrlanýr
+        DisplayTime(); // Zaman sýfýr olduðunda güncellenmiþ süreyi göster
+        Debug.Log("Zaman doldu!"); // Zamanýn bittiði mesajý
+        StopTimer(); // Timer bittiðinde durdur
     }
-<<<<<<< Updated upstream
-=======
+
     protected void DisplayTime()
     {
-        timeText.text = "Time: " + remainingTime;
-
+        timeText.text = "Time: " + remainingTime; // Zamaný yuvarlayarak göster
     }
-
-
->>>>>>> Stashed changes
 }
