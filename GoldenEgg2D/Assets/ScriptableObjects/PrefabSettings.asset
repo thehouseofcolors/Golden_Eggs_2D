@@ -13,6 +13,10 @@ MonoBehaviour:
   m_Name: PrefabSettings
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 6383398436628236000, guid: 1ac976c66b08acb4bbe94a23c0c12c33, type: 3}
-  chickenPrefab: {fileID: 1206511787925574, guid: 3b1e3e9155d404942bc65d9aa80120ba, type: 3}
+  chickenPrefab: {fileID: 5390491755174570810, guid: c12b3bdcfbdc6f54cacb62896a8e94e3, type: 3}
   regularEggPrefab: {fileID: 3870152455136529767, guid: 6dcec8e943bd2e8429097721a3710e51, type: 3}
   goldenEggPrefab: {fileID: 4628658415589742160, guid: 3cc08c93e8305c8478fcf1783fcb7ec2, type: 3}
+  chickenPositions:
+  - {x: 0, y: 3, z: 0}
+  - {x: 0, y: 2, z: 0}
+  - {x: 0, y: 1, z: 0}

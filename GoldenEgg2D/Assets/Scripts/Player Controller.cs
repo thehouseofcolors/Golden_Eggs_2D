@@ -4,12 +4,10 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    private Main_Manager main_manager;
 
     public float speed = 5f; 
     private void Start()
     {
-        main_manager = FindObjectOfType<Main_Manager>();
     }
     private void Update()
     {
@@ -30,12 +28,12 @@ public class PlayerController : MonoBehaviour
     }
     private void OnEnable()
     {
-        main_manager.gameStatusChanged += UpdatePlayer;
+        Main_Manager.Instance.gameStatusChanged += UpdatePlayer;
 
     }
     private void OnDestroy()
     {
-        main_manager.gameStatusChanged -= UpdatePlayer;
+        Main_Manager.Instance.gameStatusChanged -= UpdatePlayer;
 
     }
 

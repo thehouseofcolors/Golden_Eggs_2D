@@ -4,11 +4,11 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class UI_Manager : Main_Manager
+public class UI_Manager : MonoBehaviour
 {
-    [SerializeField] private CanvasGroup Entry;
-    [SerializeField] private CanvasGroup Play;
-    [SerializeField] private CanvasGroup Pause;
+    private CanvasGroup Entry;
+    private CanvasGroup Play;
+    private CanvasGroup Pause;
 
     [SerializeField] private GameObject entry;
 
@@ -16,25 +16,24 @@ public class UI_Manager : Main_Manager
 
     [SerializeField] private GameObject pause;
 
-    private Main_Manager mainManager;
 
     private void Start()
     {
-        mainManager = FindObjectOfType<Main_Manager>();
         Entry= entry.GetComponent<CanvasGroup>();
         Play=play.GetComponent <CanvasGroup>();
-        Pause=pause.GetComponent<CanvasGroup>();
+        Pause=pause.GetComponent <CanvasGroup>();
 
 
-        mainManager.gameStatusChanged += UpdateUI;
     }
+    
+
     private void OnEnable()
     {
-        mainManager.gameStatusChanged += UpdateUI;
+        Main_Manager.Instance.gameStatusChanged += UpdateUI;
     }
     private void OnDestroy()
     {
-        mainManager.gameStatusChanged -= UpdateUI;
+        Main_Manager.Instance.gameStatusChanged -= UpdateUI;
     }
 
     public void UpdateUI(GameStatus status)

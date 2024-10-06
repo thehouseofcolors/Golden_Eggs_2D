@@ -7,16 +7,19 @@ public class ChickenController : MonoBehaviour
     public int speed = 5;
     private bool movingRight = true;
 
-    private Main_Manager main_manager;
 
-    private void Start()
-    {
-        main_manager=FindObjectOfType<Main_Manager>();
-    }
     void Update()
     {
         Movement();
 
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("play"))
+        {
+            Debug.Log("wall!!!!");
+            movingRight = !movingRight;
+        }
     }
     private void GoLeft()
     {
@@ -41,22 +44,16 @@ public class ChickenController : MonoBehaviour
             GoLeft();
         }
     }
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("play"))
-        {
-            movingRight = !movingRight;
-        }
-    }
+   
 
     private void OnEnable()
     {
-        main_manager.gameStatusChanged += UpdateChicken;
+        Main_Manager.Instance.gameStatusChanged += UpdateChicken;
 
     }
     private void OnDestroy()
     {
-        main_manager.gameStatusChanged -= UpdateChicken;
+        Main_Manager.Instance.gameStatusChanged -= UpdateChicken;
 
     }
 
