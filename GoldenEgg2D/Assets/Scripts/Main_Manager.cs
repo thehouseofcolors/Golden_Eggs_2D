@@ -64,4 +64,7 @@ public class Main_Manager : MonoBehaviour
     {
         ChangeGameStatus(GameStatus.Playing);
     }
+
+    
+
 }

@@ -17,7 +17,6 @@ public class ChickenController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("play"))
         {
-            Debug.Log("wall!!!!");
             movingRight = !movingRight;
         }
     }

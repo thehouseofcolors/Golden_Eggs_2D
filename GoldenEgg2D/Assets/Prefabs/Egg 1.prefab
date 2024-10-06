@@ -109,6 +109,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd5ab332f7d9fbc4da620849059780fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  poolManager: {fileID: 0}
+  gameControl: {fileID: 0}
 --- !u!1001 &1986662443380491626
 PrefabInstance:
   m_ObjectHideFlags: 0

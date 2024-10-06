@@ -23,7 +23,6 @@ public class UI_Manager : MonoBehaviour
         Play=play.GetComponent <CanvasGroup>();
         Pause=pause.GetComponent <CanvasGroup>();
 
-
     }
     
 

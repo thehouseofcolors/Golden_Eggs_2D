@@ -11,6 +11,39 @@ public class PoolManager : MonoBehaviour
     private List<GameObject> eggList;
     private List<GameObject> chickenList;
 
+
+    private static PoolManager _instance;
+    public static PoolManager Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = FindObjectOfType<PoolManager>();
+
+                if (_instance == null)
+                {
+                    GameObject singletonObject = new GameObject();
+                    _instance = singletonObject.AddComponent<PoolManager>();
+                    singletonObject.name = typeof(Main_Manager).ToString() + " (Singleton)";
+                }
+            }
+            return _instance;
+        }
+    }
+
+
+    void Awake()
+    {
+        if (_instance != null && _instance != this)
+        {
+            Destroy(gameObject); // Destroy duplicate
+            return;
+        }
+
+        _instance = this;
+        DontDestroyOnLoad(gameObject); // Keep this instance alive across scenes
+    }
     private IEnumerator DropEggsRoutine()
     {
 
@@ -46,7 +79,6 @@ public class PoolManager : MonoBehaviour
 
     public void ReAssignEgg(GameObject egg)
     {
-
         Transform chickenTransform = GetRandomChickenTransform();
         if (chickenTransform != null)
         {

@@ -9,4 +9,20 @@ public class RegularEgg : Egg
         eggType = EggType.Regular;
         eggScore = 1;
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            PoolManager.Instance.ReAssignEgg(gameObject);
+        }
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            GameControl.Instance.AddScore(eggScore);
+
+        }
+    }
 }
