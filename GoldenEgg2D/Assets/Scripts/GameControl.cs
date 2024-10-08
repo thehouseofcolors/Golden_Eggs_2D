@@ -5,13 +5,9 @@ using UnityEngine;
 
 public class GameControl : MonoBehaviour 
 {
-    [SerializeField] private GameSettings settings;
-    [SerializeField] private TextMeshProUGUI scoreText;
-    [SerializeField] private TextMeshProUGUI timeText;
 
-    private int currentScore;
-    private int currentTime;
-
+    private UI_Manager uiManager;
+    private PlayingUIManager playingUIManager;
     private static GameControl _instance;
     public static GameControl Instance
     {
@@ -46,71 +42,23 @@ public class GameControl : MonoBehaviour
     }
 
 
-    private void OnEnable()
+    private void Start()
     {
-        Main_Manager.Instance.gameStatusChanged += GameSettingsControl;
-    }
-    private void OnDestroy()
-    {
-        Main_Manager.Instance.gameStatusChanged -= GameSettingsControl;
-    }
-    
-
-    public void GameSettingsControl(GameStatus status)
-    {
-        if (Main_Manager.Instance.currentStatus == GameStatus.Entry)
-        {
-            currentScore = settings.ResetScore();
-            currentTime = settings.ResetTime();
-            UpdateScoreUI();
-            UpdateTimeUI();
-        }
-        if (Main_Manager.Instance.currentStatus == GameStatus.Playing)
-        {
-            StartTimer();
-        }
+        uiManager.ChangeGameStatus(GameStatus.Entry); // Oyunu baþlat
     }
 
-    
-
-    private IEnumerator TimerRoutine()
+    public void CompleteLevel()
     {
-        while (Main_Manager.Instance.currentStatus == GameStatus.Playing)
-        {
-            yield return new WaitForSeconds(1f);
-            currentTime--;
-            UpdateTimeUI();
-
-            if (currentTime <= 0)
-            {
-                Main_Manager.Instance.ChangeGameStatus(GameStatus.Paused);
-            }
-        }
+        playingUIManager.Win(); // Kazanma durumunu ayarla
     }
 
-    public void StartTimer()
+    public void FailLevel()
     {
-        StopAllCoroutines(); // Her ihtimale karþý önceki Coroutine'leri durdur
-        StartCoroutine(TimerRoutine());
+        playingUIManager.GameOver(); // Oyun bitiþ durumunu ayarla
     }
-    public void AddScore(int addToScore)
-    {
-        
-        if(Main_Manager.Instance.currentStatus==GameStatus.Playing)
-        {
-            currentScore += addToScore;
-            UpdateScoreUI();
-        }
-    }
-    
 
-    private void UpdateScoreUI()
+    public void StartGame()
     {
-        
-        scoreText.text = "Score: " + currentScore.ToString();
-    }
-    private void UpdateTimeUI()
-    {
-        timeText.text = "Time: " + currentTime.ToString();
+        playingUIManager.StartTimer(30f); // 30 saniyelik zamanlayýcýyý baþlat
     }
 }

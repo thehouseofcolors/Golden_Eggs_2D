@@ -6,7 +6,11 @@ public class ChickenController : MonoBehaviour
 {
     public int speed = 5;
     private bool movingRight = true;
-
+    private UI_Manager manager;
+    void Start()
+    {
+        manager = FindObjectOfType<UI_Manager>(); // Assuming UI_Manager is a singleton or in the scene.
+    }
 
     void Update()
     {
@@ -47,28 +51,24 @@ public class ChickenController : MonoBehaviour
 
     private void OnEnable()
     {
-        Main_Manager.Instance.gameStatusChanged += UpdateChicken;
+        manager.gameStatusChanged += UpdateChicken;
 
     }
     private void OnDestroy()
     {
-        Main_Manager.Instance.gameStatusChanged -= UpdateChicken;
+        manager.gameStatusChanged -= UpdateChicken;
 
     }
 
     public void UpdateChicken(GameStatus status)
     {
+        gameObject.SetActive(false);
         switch (status)
         {
-            case GameStatus.Entry:
-                gameObject.SetActive(false);
-                break;
             case GameStatus.Playing:
                 gameObject.SetActive(true);
                 break;
-            case GameStatus.Paused:
-                gameObject.SetActive(false);
-                break;
+            
         }
     }
 }

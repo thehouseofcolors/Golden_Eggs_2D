@@ -8,7 +8,7 @@ using UnityEngine.Tilemaps;
 [CreateAssetMenu(fileName = "GameSettings", menuName = "GameSettings")]
 public class GameSettings : ScriptableObject
 {
-    private int currentLevel = 0;
+    private int currentLevel = 1;
 
     public int ResetTime() => 30;
     public int ResetScore() => 0;

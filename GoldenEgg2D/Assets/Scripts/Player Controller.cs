@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-
+    private UI_Manager manager;
     public float speed = 5f;
 
-    private void Start()
+    void Start()
     {
+        manager = FindObjectOfType<UI_Manager>(); // Assuming UI_Manager is a singleton or in the scene.
     }
+
     private void Update()
     {
         Vector2 touchPosition = Vector2.zero;
@@ -30,12 +32,12 @@ public class PlayerController : MonoBehaviour
     
     private void OnEnable()
     {
-        Main_Manager.Instance.gameStatusChanged += UpdatePlayer;
+        manager.gameStatusChanged += UpdatePlayer;
 
     }
     private void OnDestroy()
     {
-        Main_Manager.Instance.gameStatusChanged -= UpdatePlayer;
+        manager.gameStatusChanged -= UpdatePlayer;
 
     }
 
@@ -43,17 +45,15 @@ public class PlayerController : MonoBehaviour
     
     public void UpdatePlayer(GameStatus status)
     {
+
+        gameObject.SetActive(false);
         switch (status)
         {
-            case GameStatus.Entry:
-                gameObject.SetActive(false);
-                break;
+
             case GameStatus.Playing:
                 gameObject.SetActive(true);
                 break;
-            case GameStatus.Paused:
-                gameObject.SetActive(false);
-                break;
+            
         }
     }
 }

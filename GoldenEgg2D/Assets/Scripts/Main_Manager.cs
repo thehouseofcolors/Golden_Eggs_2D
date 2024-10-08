@@ -2,8 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
-public enum GameStatus { Entry, Playing, Paused}
 
 public class Main_Manager : MonoBehaviour
 {
@@ -26,8 +28,6 @@ public class Main_Manager : MonoBehaviour
             return _instance;
         }
     }
-
-    
     void Awake()
     {
         if (_instance != null && _instance != this)
@@ -40,31 +40,9 @@ public class Main_Manager : MonoBehaviour
         DontDestroyOnLoad(gameObject); // Keep this instance alive across scenes
     }
 
-    public event Action<GameStatus> gameStatusChanged;
-
-    public GameStatus currentStatus = GameStatus.Playing;
-
-    private void Start()
-    {
-        ChangeGameStatus(GameStatus.Entry);
-    }
+    
 
     
-    public void ChangeGameStatus(GameStatus newStatus)
-    {
-        if(currentStatus != newStatus)
-        {
-            currentStatus = newStatus;
-            gameStatusChanged?.Invoke(currentStatus);
-
-        }
-    }
-
-    public void StartGame()
-    {
-        ChangeGameStatus(GameStatus.Playing);
-    }
-
     
 
 }
