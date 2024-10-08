@@ -13,6 +13,12 @@ public class PoolManager : MonoBehaviour
 
 
     private static PoolManager _instance;
+    private UI_Manager manager;
+
+    private void Start()
+    {
+        manager=FindObjectOfType<UI_Manager>();
+    }
     public static PoolManager Instance
     {
         get
@@ -49,7 +55,7 @@ public class PoolManager : MonoBehaviour
 
         eggList = SpawnGameObjects.Instance.GetEggPoolObjects();
 
-        while (Main_Manager.Instance.currentStatus == GameStatus.Playing)
+        while (manager.currentStatus == GameStatus.Playing)
         {
             foreach (GameObject egg in eggList)
             {
@@ -122,11 +128,12 @@ public class PoolManager : MonoBehaviour
 
     private void OnEnable()
     {
-        Main_Manager.Instance.gameStatusChanged += DropingState;
+        
+        manager.gameStatusChanged += DropingState;
     }
     private void OnDestroy()
     {
-        Main_Manager.Instance.gameStatusChanged -= DropingState;
+        manager.gameStatusChanged -= DropingState;
 
     }
 
@@ -134,14 +141,10 @@ public class PoolManager : MonoBehaviour
     {
         switch (status)
         {
-            case GameStatus.Entry:
-
-                StopDroping();  
-                break;
             case GameStatus.Playing:
                 StartDroping();
                 break;
-            case GameStatus.Paused:
+            default:
                 StopDroping();
                 break;
         }

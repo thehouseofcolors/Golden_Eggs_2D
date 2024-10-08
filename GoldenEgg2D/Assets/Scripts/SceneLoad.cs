@@ -15,8 +15,7 @@ public class SceneLoad : MonoBehaviour
 
     private void Start()
     {
-        // Oyun baþlangýçta MainMenu'yu göster
-        ChangeSceneStatus(SceneStatus.MainMenu);
+        Debug.Log("sceneload start");
     }
 
     public void ChangeSceneStatus(SceneStatus newStatus)

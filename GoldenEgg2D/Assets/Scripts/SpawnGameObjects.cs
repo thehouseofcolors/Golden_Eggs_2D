@@ -15,6 +15,8 @@ public class SpawnGameObjects : MonoBehaviour
     private List<GameObject> eggList = new List<GameObject>();
 
     private GameObject player;
+
+    private UI_Manager manager;
     private void Awake()
     {
         if (Instance == null)
@@ -29,6 +31,7 @@ public class SpawnGameObjects : MonoBehaviour
 
     private void Start()
     {
+        manager=FindObjectOfType<UI_Manager>();
         SpawnPlayerAtBottomCenter();
     }
     void SpawnPlayerAtBottomCenter()
@@ -74,11 +77,11 @@ public class SpawnGameObjects : MonoBehaviour
 
     private void OnEnable()
     {
-        Main_Manager.Instance.gameStatusChanged += HandleGameStatusChanged;
+        manager.gameStatusChanged += HandleGameStatusChanged;
     }
     private void OnDestroy()
     {
-        Main_Manager.Instance.gameStatusChanged -= HandleGameStatusChanged;
+        manager.gameStatusChanged -= HandleGameStatusChanged;
     }
     
    
@@ -104,9 +107,7 @@ public class SpawnGameObjects : MonoBehaviour
                 SpawnChicken(level);
                
                 break;
-            case GameStatus.Paused:
-
-                break;
+            
         }
     }
 
@@ -120,9 +121,6 @@ public class SpawnGameObjects : MonoBehaviour
                 break;
             case GameStatus.Playing:
                 player.SetActive(true);
-                break;
-            case GameStatus.Paused:
-                player.SetActive(false);
                 break;
         }
     }

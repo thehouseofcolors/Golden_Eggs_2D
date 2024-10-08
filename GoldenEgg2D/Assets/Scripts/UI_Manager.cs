@@ -37,7 +37,7 @@ public class UI_Manager : MonoBehaviour
 
     public void StartGame()
     {
-        ChangeGameStatus(GameStatus.Playing);
+        Debug.Log("uý start");
     }
 
 

@@ -8,6 +8,7 @@ public class GameControl : MonoBehaviour
 
     private UI_Manager uiManager;
     private PlayingUIManager playingUIManager;
+    
     private static GameControl _instance;
     public static GameControl Instance
     {
@@ -44,6 +45,9 @@ public class GameControl : MonoBehaviour
 
     private void Start()
     {
+        Debug.Log("gamecontrol stat");
+        uiManager=FindObjectOfType<UI_Manager>();
+        
         uiManager.ChangeGameStatus(GameStatus.Entry); // Oyunu baþlat
     }
 
