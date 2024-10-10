@@ -5,65 +5,51 @@ using UnityEngine.Tilemaps;
 
 public class SpawnGameObjects : MonoBehaviour
 {
-    public static SpawnGameObjects Instance { get; private set; }
-
-
     [SerializeField] private PrefabSettings prefabSettings;
     [SerializeField] private GameSettings gameSettings;
     [SerializeField] private Transform playTilemap;
+
     private List<GameObject> chickenList = new List<GameObject>();
     private List<GameObject> eggList = new List<GameObject>();
 
-    private GameObject player;
+    private static SpawnGameObjects instance;
+    public static SpawnGameObjects Instance {  get { return instance; } }
 
-    private UI_Manager manager;
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        if (instance == null) {instance = this;} else {Destroy(gameObject);}
+        Debug.Log("spawmn objects awake");
     }
 
     private void Start()
     {
-        manager=FindObjectOfType<UI_Manager>();
-        SpawnPlayerAtBottomCenter();
+        Debug.Log("spawmn objects start");
     }
-    void SpawnPlayerAtBottomCenter()
+    public void SpawnPlayerAtBottomCenter()
     {
         Vector3 spawnPosition = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0, Camera.main.nearClipPlane));
         spawnPosition.y += 1.0f;
         spawnPosition.z = 0;
-        player = Instantiate(prefabSettings.GetPlayerPrefab(), spawnPosition, Quaternion.identity);
+        GameObject player = Instantiate(prefabSettings.GetPlayerPrefab(), spawnPosition, Quaternion.identity);
         player.transform.SetParent(playTilemap);
-        player.SetActive(false);
+        player.SetActive(true);
 
     }
-    void SpawnChicken(int level)
+    public void SpawnChicken()
     {
-        //Vector3 spawnPosition=prefabSettings.GetPosition(1);
-        
-
         Vector3 spawnPosition = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.8f, Camera.main.nearClipPlane));
-        spawnPosition.y += 1.0f;
+        spawnPosition.y -= 1.0f;
         spawnPosition.z = 0;
 
         GameObject chicken = Instantiate(prefabSettings.GetChickenPrefab(), spawnPosition, Quaternion.Euler(0,90,0));
         chicken.transform.SetParent(playTilemap);
 
-        chicken.SetActive(true);
         chickenList.Add(chicken);
         SpawnEggs(chicken, spawnPosition);
     }
-
     void SpawnEggs(GameObject chicken, Vector3 spawnPosition)
     {
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 6; i++)
         {
             Vector3 eggSpawnPosition = spawnPosition;
             eggSpawnPosition.x += i * 0.5f;
@@ -75,55 +61,6 @@ public class SpawnGameObjects : MonoBehaviour
         }
     }
 
-    private void OnEnable()
-    {
-        manager.gameStatusChanged += HandleGameStatusChanged;
-    }
-    private void OnDestroy()
-    {
-        manager.gameStatusChanged -= HandleGameStatusChanged;
-    }
-    
-   
-    private void HandleGameStatusChanged(GameStatus status)
-    {
-        UpdateChicken(status, gameSettings.NextLevel());
-        UpdatePlayer(status);
-        
-    }
-
-    
-
-    public void UpdateChicken(GameStatus status, int level)
-    {
-        switch (status)
-        {
-            case GameStatus.Entry:
-                chickenList.Clear();
-                eggList.Clear();
-
-                break;
-            case GameStatus.Playing:
-                SpawnChicken(level);
-               
-                break;
-            
-        }
-    }
-
-
-    public void UpdatePlayer(GameStatus status)
-    {
-        switch (status)
-        {
-            case GameStatus.Entry:
-                player.SetActive(false);
-                break;
-            case GameStatus.Playing:
-                player.SetActive(true);
-                break;
-        }
-    }
     public List<GameObject> GetEggPoolObjects() => eggList;
     public List<GameObject> GetChickenObjects() => chickenList;
 

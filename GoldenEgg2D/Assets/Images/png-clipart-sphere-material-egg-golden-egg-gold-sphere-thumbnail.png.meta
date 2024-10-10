@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: f3d6c9b3e6da0764b9e95b4e6a6ddf4d
+guid: 08a42fdc8ad6fc64c9694895f935bd48
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -39,7 +39,7 @@ TextureImporter:
     mipBias: 0
     wrapU: 1
     wrapV: 1
-    wrapW: 0
+    wrapW: 1
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -63,9 +63,9 @@ TextureImporter:
   compressionQualitySet: 0
   textureFormatSet: 0
   ignorePngGamma: 0
-  applyGammaDecoding: 1
+  applyGammaDecoding: 0
   swizzle: 50462976
-  cookieLightType: 1
+  cookieLightType: 0
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -136,13 +136,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: jelly bar_0
+      name: png-clipart-sphere-material-egg-golden-egg-gold-sphere-thumbnail_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1622
-        height: 149
+        width: 348
+        height: 460
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -150,8 +150,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: eb4a208ae5f058f49baf3488cb5841de
-      internalID: -1796552815
+      spriteID: 4c20eafcabfe6d34cbb4ada761c7413f
+      internalID: -1405892652
       vertices: []
       indices: 
       edges: []
@@ -167,7 +167,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      jelly bar_0: -1796552815
+      png-clipart-sphere-material-egg-golden-egg-gold-sphere-thumbnail_0: -1405892652
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

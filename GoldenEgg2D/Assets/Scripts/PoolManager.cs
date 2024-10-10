@@ -5,20 +5,11 @@ using UnityEngine;
 
 public class PoolManager : MonoBehaviour
 {
-
-    private Coroutine dropEggsCoroutine;
-
     private List<GameObject> eggList;
     private List<GameObject> chickenList;
 
-
+    private Coroutine dropEggsCoroutine;
     private static PoolManager _instance;
-    private UI_Manager manager;
-
-    private void Start()
-    {
-        manager=FindObjectOfType<UI_Manager>();
-    }
     public static PoolManager Instance
     {
         get
@@ -31,31 +22,36 @@ public class PoolManager : MonoBehaviour
                 {
                     GameObject singletonObject = new GameObject();
                     _instance = singletonObject.AddComponent<PoolManager>();
-                    singletonObject.name = typeof(Main_Manager).ToString() + " (Singleton)";
+                    singletonObject.name = typeof(UI_Manager).ToString() + " (Singleton)";
                 }
             }
             return _instance;
         }
     }
-
-
     void Awake()
     {
         if (_instance != null && _instance != this)
         {
-            Destroy(gameObject); // Destroy duplicate
+            Destroy(gameObject); 
             return;
         }
 
         _instance = this;
-        DontDestroyOnLoad(gameObject); // Keep this instance alive across scenes
+
+        Debug.Log("pool manager awake");
     }
+    
+    private void Start()
+    {
+        Debug.Log("pool manager start");
+    }
+
     private IEnumerator DropEggsRoutine()
     {
 
         eggList = SpawnGameObjects.Instance.GetEggPoolObjects();
 
-        while (manager.currentStatus == GameStatus.Playing)
+        while (true)
         {
             foreach (GameObject egg in eggList)
             {
@@ -125,30 +121,6 @@ public class PoolManager : MonoBehaviour
         }
     }
 
-
-    private void OnEnable()
-    {
-        
-        manager.gameStatusChanged += DropingState;
-    }
-    private void OnDestroy()
-    {
-        manager.gameStatusChanged -= DropingState;
-
-    }
-
-    public void DropingState(GameStatus status)
-    {
-        switch (status)
-        {
-            case GameStatus.Playing:
-                StartDroping();
-                break;
-            default:
-                StopDroping();
-                break;
-        }
-    }
 
 
 }

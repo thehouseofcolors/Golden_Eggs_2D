@@ -4,14 +4,34 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    private UI_Manager manager;
     public float speed = 5f;
+    private static PlayerController instance;
 
-    void Start()
+    private void Awake()
     {
-        manager = FindObjectOfType<UI_Manager>(); // Assuming UI_Manager is a singleton or in the scene.
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Debug.LogWarning("Another instance of PlayerController already exists. Destroying this duplicate.");
+            Destroy(gameObject); // Mevcut bir nesne varsa, yeni oluþturulan nesneyi yok et
+        }
     }
-
+    private void OnEnable()
+    {
+        Debug.Log("PlayerController etkinleþtirildi.");
+        UI_Manager.Instance.CanvasStatusChanged += HandleStatusChange;
+    }
+    private void Start()
+    {
+        HandleStatusChange(UI_Manager.Instance.currentCanvasStatus);
+    }
+    public void HandleStatusChange(CanvasStatus status)
+    {
+        switch (status) { case CanvasStatus.Play: gameObject.SetActive(true); break;default: gameObject.SetActive(false); break; }
+    }
     private void Update()
     {
         Vector2 touchPosition = Vector2.zero;
@@ -29,31 +49,9 @@ public class PlayerController : MonoBehaviour
 
         transform.position = Vector2.Lerp(transform.position, newPosition, speed * Time.deltaTime);
     }
-    
-    private void OnEnable()
+    private void OnDisable()
     {
-        manager.gameStatusChanged += UpdatePlayer;
-
-    }
-    private void OnDestroy()
-    {
-        manager.gameStatusChanged -= UpdatePlayer;
-
-    }
-
-
-    
-    public void UpdatePlayer(GameStatus status)
-    {
-
-        gameObject.SetActive(false);
-        switch (status)
-        {
-
-            case GameStatus.Playing:
-                gameObject.SetActive(true);
-                break;
-            
-        }
+        Debug.Log("PlayerController devre dýþý býrakýldý.");
+        UI_Manager.Instance.CanvasStatusChanged -= HandleStatusChange;
     }
 }

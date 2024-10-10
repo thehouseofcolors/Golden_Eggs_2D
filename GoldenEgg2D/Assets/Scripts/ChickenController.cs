@@ -6,16 +6,50 @@ public class ChickenController : MonoBehaviour
 {
     public int speed = 5;
     private bool movingRight = true;
-    private UI_Manager manager;
-    void Start()
+    private void Awake()
     {
-        manager = FindObjectOfType<UI_Manager>(); // Assuming UI_Manager is a singleton or in the scene.
+
+    }
+    private void OnEnable()
+    {
+        Debug.Log("ChickenController etkinleþtirildi.");
+        UI_Manager.Instance.CanvasStatusChanged += HandleStatusChange;
+
+    }
+    private void Start()
+    {
+        HandleStatusChange(CanvasStatus.Countdown);
+    }
+    public void HandleStatusChange(CanvasStatus status)
+    {
+        Debug.Log($"HandleStatusChange çaðrýldý: {status}"); // Durum deðiþikliðini logla
+
+        // Eðer "Play" durumu ise, objeyi aktif et
+        if (status == CanvasStatus.Play)
+        {
+            Debug.Log("ChickenController aktif edildi."); // Log ekle
+            gameObject.SetActive(true);
+        }
+        else if (status == CanvasStatus.Countdown) // Özel kontrol ekle
+        {
+            Debug.Log("ChickenController devre dýþý býrakýldý."); // Log ekle
+            gameObject.SetActive(true);
+        }
+        else { gameObject.SetActive(false); }
+    }
+
+    private void OnDisable()
+    {
+        Debug.Log("ChickenController devre dýþý býrakýldý.");
+        UI_Manager.Instance.CanvasStatusChanged -= HandleStatusChange;
     }
 
     void Update()
-    {
-        Movement();
-
+    {// Eðer Canvas durumu "Play" ise hareket et
+        if (UI_Manager.Instance.currentCanvasStatus == CanvasStatus.Play)
+        {
+            Movement();
+        }
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -26,10 +60,7 @@ public class ChickenController : MonoBehaviour
     }
     private void GoLeft()
     {
-
         transform.position += Vector3.left * (speed) * Time.deltaTime;
-
-
     }
     private void GoRight()
     {
@@ -37,7 +68,6 @@ public class ChickenController : MonoBehaviour
     }
     private void Movement()
     {
-
         if (movingRight)
         {
             GoRight();
@@ -48,27 +78,4 @@ public class ChickenController : MonoBehaviour
         }
     }
    
-
-    private void OnEnable()
-    {
-        manager.gameStatusChanged += UpdateChicken;
-
-    }
-    private void OnDestroy()
-    {
-        manager.gameStatusChanged -= UpdateChicken;
-
-    }
-
-    public void UpdateChicken(GameStatus status)
-    {
-        gameObject.SetActive(false);
-        switch (status)
-        {
-            case GameStatus.Playing:
-                gameObject.SetActive(true);
-                break;
-            
-        }
-    }
 }
