@@ -8,166 +8,93 @@ using UnityEngine.SceneManagement;
 using Unity.VisualScripting;
 
 
+public enum CanvasStatus { Null, Play, Win, GameOver }
+
 public class CanvasManager : MonoBehaviour
 {
-    [SerializeField] private GameObject countdown;
     [SerializeField] private GameObject win;
     [SerializeField] private GameObject gameOver;
     [SerializeField] private GameObject play;
 
-    [SerializeField] private TextMeshProUGUI scoreText; 
-    [SerializeField] private TextMeshProUGUI timerText; 
-    [SerializeField] private TextMeshProUGUI countdownText; 
 
     [SerializeField] private GameSettings gameSettings;
 
-    private float gameTime; 
-    private int score;
-    private int currentLevel;
-    private bool isPlayingActive;
+    public bool isGameActive;
 
-    private Coroutine countdownCoroutine;
-    private Coroutine timerCoroutine;
 
-    
     private static CanvasManager instance;
     public static CanvasManager Instance
     {
         get
         {
-            if (instance == null)
-            {
-                Debug.LogError("CanvasManager instance is null. Make sure there is a CanvasManager object in the scene.");
-            }
             return instance;
         }
     }
     private void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-            Debug.Log("CanvasManager - Instance initialized");
-        }
-        else if (instance != this)
-        {
-            Debug.LogWarning("Another instance of CanvasManager already exists. Destroying this duplicate.");
-            Destroy(gameObject); // Destroy duplicate instances
-        }
-
+        Debug.Log("canvas awakw");
+        instance = this;
     }
+    public event Action<CanvasStatus> CanvasStatusChanged;
+    public CanvasStatus currentCanvasStatus;
 
+    private void Start()
+    {
+        Debug.Log("canvas start");
+        ChangeCanvasStatus(CanvasStatus.Play);
+    }
+    public void ChangeCanvasStatus(CanvasStatus newStatus)
+    {
+        if (currentCanvasStatus != newStatus)
+        {
+            currentCanvasStatus = newStatus;
+            CanvasStatusChanged?.Invoke(newStatus); // Olayý tetikle
+            Debug.Log("olay tetiklendi");
+        }
+    }
 
     private void OnEnable()
     {
-        UI_Manager.Instance.CanvasStatusChanged += HandleCanvasChange;
+        Debug.Log("canvas onenable");
+        CanvasStatusChanged += HandleCanvasChange;
 
     }
-    private void OnDisable()
+    private void OnDestroy()
     {
-        UI_Manager.Instance.CanvasStatusChanged -= HandleCanvasChange;
+        CanvasStatusChanged -= HandleCanvasChange;
     }
-
+    
     public void HandleCanvasChange(CanvasStatus status)
     {
-        countdown.SetActive(false);
+
         play.SetActive(false);
         win.SetActive(false);
         gameOver.SetActive(false);
 
         switch (status)
         {
-            case CanvasStatus.Countdown:
-                countdown.gameObject.SetActive(true);
-                CountdownProses();
-                break;
             case CanvasStatus.Play:
-                play.gameObject.SetActive(true);
-                StartGame();
+                play.gameObject.SetActive(true);isGameActive = true;
                 break;
             case CanvasStatus.Win:
-                win.gameObject.SetActive(true); break;
+                win.gameObject.SetActive(true);
+                isGameActive = false;
+                break;
             case CanvasStatus.GameOver: 
-                gameOver.gameObject.SetActive(true); break;
+                gameOver.gameObject.SetActive(true);
+                isGameActive = false; 
+                break;
 
         }
     }
 
     
-    private void Start()
-    {
-        HandleCanvasChange(CanvasStatus.Countdown);
-        Debug.Log("uý start");
+    public void OnStartButtonClick() 
+    { 
+        ChangeCanvasStatus(CanvasStatus.Play); 
+        Debug.Log("start click");
     }
     
-    private void CountdownProses()
-    {
-        countdownText.gameObject.SetActive(true); 
-        countdownCoroutine = StartCoroutine(Countdown());
-        
-    }
-    
-    private IEnumerator Countdown()
-    {
-        for (int i = 3; i > 0; i--)
-        {
-            countdownText.text = i.ToString(); // Geri sayýmý güncelle
-            yield return new WaitForSeconds(1); // 2 saniye bekle
-        }
-
-        countdownText.text = "Go!"; // "Go!" yaz
-        yield return new WaitForSeconds(1); // 1 saniye bekle
-
-        countdownText.gameObject.SetActive(false); // Geri sayým metnini gizle
-        countdownCoroutine = null;
-        HandleCanvasChange(CanvasStatus.Play); // Automatically transition to the Play canvas
-  
-    }
-    
-    public void StartGame()
-    {
-        gameTime = gameSettings.ResetTime();
-        score=gameSettings.ResetScore();
-        currentLevel = gameSettings.currentLevel;
-
-        timerText.gameObject.SetActive(true);
-        scoreText.gameObject.SetActive(true);
-        UpdateScore(score);
-        timerCoroutine = StartCoroutine(TimerCoroutine(gameTime));
-        SpawnGameObjects.Instance.SpawnChicken();
-    }
-    
-    private IEnumerator TimerCoroutine(float duration)
-    {
-        float timeRemaining = duration;
-
-        while (timeRemaining >= 0)
-        {
-            // Kalan süreyi güncelleyin ve UI'ye yazdýrýn
-            timerText.text = "Time: " + Mathf.FloorToInt(timeRemaining);
-            timeRemaining -= Time.deltaTime; // Geçen zamaný çýkar
-            yield return null; // Bir sonraki frame'e geç
-        }
-        StopGame(); 
-
-
-    }
-    public void StopGame()
-    {
-        scoreText.gameObject.SetActive(false);
-        timerText.gameObject.SetActive(false);
-        timerCoroutine = null;
-        play.SetActive(false);
-        HandleCanvasChange(CanvasStatus.Win);
-    }
-
-    public void UpdateScore(int amount)
-    {
-        score += amount; // Puaný güncelle
-        scoreText.text = $"Score: {score}"; // Puan metnini güncelle
-    }
-
-
 }
 
 

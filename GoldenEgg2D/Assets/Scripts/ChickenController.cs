@@ -6,47 +6,11 @@ public class ChickenController : MonoBehaviour
 {
     public int speed = 5;
     private bool movingRight = true;
-    private void Awake()
-    {
-
-    }
-    private void OnEnable()
-    {
-        Debug.Log("ChickenController etkinleþtirildi.");
-        UI_Manager.Instance.CanvasStatusChanged += HandleStatusChange;
-
-    }
-    private void Start()
-    {
-        HandleStatusChange(CanvasStatus.Countdown);
-    }
-    public void HandleStatusChange(CanvasStatus status)
-    {
-        Debug.Log($"HandleStatusChange çaðrýldý: {status}"); // Durum deðiþikliðini logla
-
-        // Eðer "Play" durumu ise, objeyi aktif et
-        if (status == CanvasStatus.Play)
-        {
-            Debug.Log("ChickenController aktif edildi."); // Log ekle
-            gameObject.SetActive(true);
-        }
-        else if (status == CanvasStatus.Countdown) // Özel kontrol ekle
-        {
-            Debug.Log("ChickenController devre dýþý býrakýldý."); // Log ekle
-            gameObject.SetActive(true);
-        }
-        else { gameObject.SetActive(false); }
-    }
-
-    private void OnDisable()
-    {
-        Debug.Log("ChickenController devre dýþý býrakýldý.");
-        UI_Manager.Instance.CanvasStatusChanged -= HandleStatusChange;
-    }
+    
 
     void Update()
     {// Eðer Canvas durumu "Play" ise hareket et
-        if (UI_Manager.Instance.currentCanvasStatus == CanvasStatus.Play)
+        if (CanvasManager.Instance.currentCanvasStatus == CanvasStatus.Play)
         {
             Movement();
         }
