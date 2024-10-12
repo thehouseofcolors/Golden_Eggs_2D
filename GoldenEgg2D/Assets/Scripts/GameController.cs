@@ -2,52 +2,37 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class GameController : MonoBehaviour
 {
-    [SerializeField] private GameSettings gameSettings;
+    [SerializeField] private GameData gameData;
+    [SerializeField] private TextMeshProUGUI scoreText;
 
 
-    private float gameTime;
+
     private int currentScore;
+    private int currentHealth;
     private int currentLevel;
-
-    private static GameController instance;
-    public static GameController Instance {  get { return instance; } }
-    private void Awake()
-    {
-        Debug.Log("gamecontrol awakw");
-        instance = this;
-    }
-    
-    
-    private void Start()
-    {
-       
-    }
 
     private void OnEnable()
     {
-        Debug.Log("Gamecontrol onenable");
-        CanvasManager.Instance.CanvasStatusChanged += HandleGameActiveState;
-    }
-    private void OnDestroy()
-    {
-        CanvasManager.Instance.CanvasStatusChanged -= HandleGameActiveState;
-    }
-    public void HandleGameActiveState(CanvasStatus status)
-    {
-        if (status == CanvasStatus.Play)
-        {
-            ResetUI();
-        }
         
     }
 
-    public void ResetUI()
+    public void InitializeLevel()
     {
-        gameTime = gameSettings.ResetTime();
-        currentScore = gameSettings.ResetScore();
-        currentLevel = gameSettings.currentLevel;
+        currentScore = 0;
+        gameData.CurrentScore = currentScore;
+        currentHealth = gameData.PlayerHealthStart;
+        currentLevel = gameData.CurrentLevel;
     }
+    public void DisplayScore()
+    {
+        scoreText.text ="Score: "+ currentScore.ToString();
+    }
+
+    
+
 }

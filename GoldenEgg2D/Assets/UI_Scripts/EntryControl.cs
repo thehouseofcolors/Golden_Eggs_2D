@@ -29,4 +29,22 @@ public class EntryControl : MonoBehaviour
     {
         SceneManager.LoadScene("Levels");
     }
+
+
+
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        InitializeLevel();
+    }
+
+    private void InitializeLevel()
+    {
+
+    }
 }

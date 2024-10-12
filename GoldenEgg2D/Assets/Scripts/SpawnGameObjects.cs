@@ -6,7 +6,6 @@ using UnityEngine.Tilemaps;
 public class SpawnGameObjects : MonoBehaviour
 {
     [SerializeField] private PrefabSettings prefabSettings;
-    [SerializeField] private GameSettings gameSettings;
     [SerializeField] private Transform playTilemap;
 
     private List<GameObject> chickenList = new List<GameObject>();

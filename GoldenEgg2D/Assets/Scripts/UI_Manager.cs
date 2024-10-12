@@ -10,26 +10,19 @@ using UnityEngine.SocialPlatforms.Impl;
 
 public class UI_Manager : MonoBehaviour
 {
-    [SerializeField] private GameSettings gameSettings;
-    [SerializeField] private TextMeshProUGUI scoreText;
-   
-
-    
     [SerializeField] private Image[] stars; // Yýldýzlarý tutacak dizi
     [SerializeField] private Sprite starFilled; // Dolu yýldýz sprite'ý
     [SerializeField] private Sprite starEmpty; // Boþ yýldýz sprite'ý
 
-    private int currentHealth; // Mevcut can sayýsý
 
+    private int currentHealth;
     private void Start()
     {
         //currentHealth = stars.Length; // Baþlangýçta tüm yýldýz dolu
         UpdateHealthDisplay();
     }
-    public void DisplayScore()
-    {
-        scoreText.text = "Score: " + gameSettings.currentScore;
-    }
+
+
     public void SetHealth(int health)
     {
         currentHealth = health; // Caný güncelle
@@ -50,5 +43,4 @@ public class UI_Manager : MonoBehaviour
             }
         }
     }
-
 }

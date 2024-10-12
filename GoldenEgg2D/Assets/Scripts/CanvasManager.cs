@@ -16,9 +16,6 @@ public class CanvasManager : MonoBehaviour
     [SerializeField] private GameObject gameOver;
     [SerializeField] private GameObject play;
 
-
-    [SerializeField] private GameSettings gameSettings;
-
     public bool isGameActive;
 
 
@@ -49,7 +46,7 @@ public class CanvasManager : MonoBehaviour
         {
             currentCanvasStatus = newStatus;
             CanvasStatusChanged?.Invoke(newStatus); // Olayý tetikle
-            Debug.Log("olay tetiklendi");
+            Debug.Log("canvas status changed");
         }
     }
 
@@ -64,7 +61,7 @@ public class CanvasManager : MonoBehaviour
         CanvasStatusChanged -= HandleCanvasChange;
     }
     
-    public void HandleCanvasChange(CanvasStatus status)
+    private void HandleCanvasChange(CanvasStatus status)
     {
 
         play.SetActive(false);
@@ -74,7 +71,8 @@ public class CanvasManager : MonoBehaviour
         switch (status)
         {
             case CanvasStatus.Play:
-                play.gameObject.SetActive(true);isGameActive = true;
+                play.gameObject.SetActive(true);
+                isGameActive = true;
                 break;
             case CanvasStatus.Win:
                 win.gameObject.SetActive(true);

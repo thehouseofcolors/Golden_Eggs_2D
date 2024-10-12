@@ -10,7 +10,7 @@ public class Timer : MonoBehaviour
 {
 
     [SerializeField] private TextMeshProUGUI timerText;
-    [SerializeField] private GameSettings gameSettings;
+    [SerializeField] private GameData gameData;
 
     private Coroutine timerCoroutine;
     private static Timer timer;
@@ -18,7 +18,6 @@ public class Timer : MonoBehaviour
 
     private void Awake()
     {
-        Debug.Log("timer awakw");
         timer = this;
     }
 
@@ -35,32 +34,36 @@ public class Timer : MonoBehaviour
     private void HandleTimer(CanvasStatus status)
     {
         if (status==CanvasStatus.Play) { StartTimer();  }
-        Debug.Log("handle timer start");
+        else { StopTimer(); }
     }
 
 
-    public void StartTimer()
+    private void StartTimer()
     {
         Debug.Log("timer start");
         timerCoroutine = StartCoroutine(TimerCoroutine());
     }
-    public void StopTimer()
+    private void StopTimer()
     {
-        StopCoroutine(timerCoroutine);
-        timerCoroutine = null;
+        if(timerCoroutine != null) {
+            StopCoroutine(timerCoroutine);
+            timerCoroutine = null;
+        }
+        
     }
 
     private IEnumerator TimerCoroutine()
     {
-        float timeRemaining = gameSettings.ResetTime();
-        while (timeRemaining > 0)
+
+        float timeRemaining = gameData.PlayTimeDuration;
+        while (timeRemaining >= 0)
         {
-            Debug.Log("time");
             timerText.text = "Time: " + Mathf.FloorToInt(timeRemaining);
             yield return new WaitForSeconds(1f);
             timeRemaining -= 1f;
         }
         StopTimer();
+        CanvasManager.Instance.ChangeCanvasStatus(CanvasStatus.Win);    
     }
 
 }
