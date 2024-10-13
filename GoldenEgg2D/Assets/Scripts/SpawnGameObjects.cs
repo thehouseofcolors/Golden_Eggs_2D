@@ -5,11 +5,12 @@ using UnityEngine.Tilemaps;
 
 public class SpawnGameObjects : MonoBehaviour
 {
-    [SerializeField] private PrefabSettings prefabSettings;
+    [SerializeField] private GameData gameData;
     [SerializeField] private Transform playTilemap;
 
-    private List<GameObject> chickenList = new List<GameObject>();
-    private List<GameObject> eggList = new List<GameObject>();
+    public List<GameObject> chickenList = new List<GameObject>();
+
+    public Queue<GameObject> eggPool = new Queue<GameObject>();
 
     private static SpawnGameObjects instance;
     public static SpawnGameObjects Instance {  get { return instance; } }
@@ -22,46 +23,66 @@ public class SpawnGameObjects : MonoBehaviour
 
     private void Start()
     {
+        
         Debug.Log("spawmn objects start");
+        SpawnPlayer();
+        SpawnChicken();
+        SpawnEggs();
     }
-    public void SpawnPlayerAtBottomCenter()
+
+
+    public void SpawnPlayer()
     {
-        Vector3 spawnPosition = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0, Camera.main.nearClipPlane));
-        spawnPosition.y += 1.0f;
-        spawnPosition.z = 0;
-        GameObject player = Instantiate(prefabSettings.GetPlayerPrefab(), spawnPosition, Quaternion.identity);
+        Vector3 spawnPosition = gameData.PlayerPos;
+
+        GameObject player = Instantiate(gameData.PlayerPrefab, spawnPosition, Quaternion.identity);
         player.transform.SetParent(playTilemap);
-        player.SetActive(true);
 
     }
     public void SpawnChicken()
     {
-        Vector3 spawnPosition = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.8f, Camera.main.nearClipPlane));
-        spawnPosition.y -= 1.0f;
-        spawnPosition.z = 0;
-
-        GameObject chicken = Instantiate(prefabSettings.GetChickenPrefab(), spawnPosition, Quaternion.Euler(0,90,0));
+        Vector3 spawnPosition = gameData.GetChickenPos(0);
+        spawnPosition.z = 5;
+        GameObject chicken = Instantiate(gameData.ChickenPrefab, spawnPosition, Quaternion.Euler(0, 90, 0));
         chicken.transform.SetParent(playTilemap);
-
         chickenList.Add(chicken);
-        SpawnEggs(chicken, spawnPosition);
+
+        Vector3 _spawnPosition = gameData.GetChickenPos(1);
+        _spawnPosition.z = 5;
+        GameObject _chicken = Instantiate(gameData.ChickenPrefab, _spawnPosition, Quaternion.Euler(0, 90, 0));
+        _chicken.transform.SetParent(playTilemap);
+        
+        // Mevcut hýz vektörünü al
+        Vector2 currentVelocity = _chicken.GetComponent<Rigidbody2D>().velocity;
+
+        // Hýzý artýr
+        currentVelocity += new Vector2(1f, 0); // X ekseninde hýz artýrma
+
+        // Yeni hýzý ata
+        _chicken.GetComponent<Rigidbody2D>().velocity = currentVelocity;
+
+        chickenList.Add(_chicken);
+
     }
-    void SpawnEggs(GameObject chicken, Vector3 spawnPosition)
+    void SpawnEggs()
     {
         for (int i = 0; i < 6; i++)
         {
-            Vector3 eggSpawnPosition = spawnPosition;
-            eggSpawnPosition.x += i * 0.5f;
-            GameObject egg = Instantiate(prefabSettings.GetRegularEggPrefab(), eggSpawnPosition, Quaternion.identity);
-            egg.transform.SetParent(chicken.transform);
+            Vector3 eggSpawnPosition = GetRandomChichen().transform.position;
+            
+            eggSpawnPosition.z = 0;
+            GameObject egg = Instantiate(gameData.RegularEggPrefab, eggSpawnPosition, Quaternion.identity);
+            egg.transform.SetParent(GetRandomChichen().transform    );
+            
             egg.SetActive(false);
-            eggList.Add(egg);
+            eggPool.Enqueue(egg);
 
         }
     }
+    public GameObject GetRandomChichen()
+    {
+        return chickenList[Random.Range(0, chickenList.Count)];
+    }
 
-    public List<GameObject> GetEggPoolObjects() => eggList;
-    public List<GameObject> GetChickenObjects() => chickenList;
-
-
+    public GameObject GetRandomEgg() { return eggPool.Dequeue(); }
 }

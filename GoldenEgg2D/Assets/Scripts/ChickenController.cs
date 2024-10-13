@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class ChickenController : MonoBehaviour
 {
-    public int speed = 5;
     private bool movingRight = true;
     
+    private int RandomSpeed() { return Random.Range(3,6); }
 
     void Update()
     {// Eðer Canvas durumu "Play" ise hareket et
@@ -17,18 +17,18 @@ public class ChickenController : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("play"))
+        if (collision.gameObject.CompareTag("Wall"))
         {
             movingRight = !movingRight;
         }
     }
     private void GoLeft()
     {
-        transform.position += Vector3.left * (speed) * Time.deltaTime;
+        transform.position += Vector3.left * RandomSpeed()* Time.deltaTime;
     }
     private void GoRight()
     {
-        transform.position += Vector3.right * speed * Time.deltaTime;
+        transform.position += Vector3.right * RandomSpeed() * Time.deltaTime;
     }
     private void Movement()
     {

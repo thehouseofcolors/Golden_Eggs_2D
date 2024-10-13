@@ -5,8 +5,9 @@ using UnityEngine;
 
 public class PoolManager : MonoBehaviour
 {
-    private List<GameObject> eggList;
+
     private List<GameObject> chickenList;
+    private Queue<GameObject> eggPool;
 
     private Coroutine dropEggsCoroutine;
     private static PoolManager _instance;
@@ -14,17 +15,6 @@ public class PoolManager : MonoBehaviour
     {
         get
         {
-            if (_instance == null)
-            {
-                _instance = FindObjectOfType<PoolManager>();
-
-                if (_instance == null)
-                {
-                    GameObject singletonObject = new GameObject();
-                    _instance = singletonObject.AddComponent<PoolManager>();
-                    singletonObject.name = typeof(UI_Manager).ToString() + " (Singleton)";
-                }
-            }
             return _instance;
         }
     }
@@ -32,38 +22,74 @@ public class PoolManager : MonoBehaviour
     {
         if (_instance != null && _instance != this)
         {
-            Destroy(gameObject); 
+            Destroy(gameObject);
             return;
         }
 
         _instance = this;
 
-        Debug.Log("pool manager awake");
+        Debug.Log("PoolManager awake");
     }
-    
+   
+   
+    private void OnEnable()
+    {
+        CanvasManager.Instance.CanvasStatusChanged += HandleDroppingEggs;
+    }
     private void Start()
     {
+        eggPool = SpawnGameObjects.Instance.eggPool;
+        chickenList = SpawnGameObjects.Instance.chickenList;
         Debug.Log("pool manager start");
+    }
+
+
+
+    public void StartDroping()
+    {
+        // Initialize eggPool when starting to drop eggs
+        if (eggPool == null)
+        {
+            eggPool = SpawnGameObjects.Instance.eggPool; // Initialize here
+        }
+
+        if (dropEggsCoroutine == null)
+        {
+            dropEggsCoroutine = StartCoroutine(DropEggsRoutine());
+        }
+
+    }
+    public Transform GetRandomChichen()
+    {
+        return chickenList[Random.Range(0, chickenList.Count)].transform;
+    }
+
+    private void HandleDroppingEggs(CanvasStatus canvasStatus)
+    {
+        if (canvasStatus==CanvasStatus.Play) { StartDroping(); } else { StopDroping(); }
+    }
+
+    private void OnDestroy()
+    {
+
+        CanvasManager.Instance.CanvasStatusChanged -= HandleDroppingEggs;
     }
 
     private IEnumerator DropEggsRoutine()
     {
 
-        eggList = SpawnGameObjects.Instance.GetEggPoolObjects();
-
         while (true)
         {
-            foreach (GameObject egg in eggList)
+            GameObject egg = GetRandomEgg();
+            if (egg != null)
             {
-                if (!egg.activeInHierarchy)
-                {
-                    DropEgg(egg);
-                    yield return new WaitForSeconds(2f);
-
-                }
+                DropEgg(egg);
+                yield return new WaitForSeconds(2f);
             }
-            yield return new WaitForSeconds(2f);
-
+            else
+            {
+                yield return null; // Wait for the next frame if no eggs are available
+            }
         }
 
         
@@ -81,37 +107,17 @@ public class PoolManager : MonoBehaviour
 
     public void ReAssignEgg(GameObject egg)
     {
-        Transform chickenTransform = GetRandomChickenTransform();
+        Transform chickenTransform = GetRandomChichen();
         if (chickenTransform != null)
         {
             egg.transform.SetParent(chickenTransform);
             egg.transform.position = chickenTransform.position;
-
             egg.SetActive(false);
+            eggPool.Enqueue(egg);
         }
     }
-    public Transform GetRandomChickenTransform()
-    {
-        chickenList = SpawnGameObjects.Instance.GetChickenObjects();
+    
 
-        if (chickenList.Count > 0)
-        {
-            int randomIndex = Random.Range(0, chickenList.Count);
-            return chickenList[randomIndex].transform;
-        }
-        return null;
-    }
-
-
-    public void StartDroping()
-    {
-
-        if (dropEggsCoroutine == null)
-        {
-            dropEggsCoroutine = StartCoroutine(DropEggsRoutine());
-        }
-
-    }
     public void StopDroping()
     {
         if (dropEggsCoroutine != null)
@@ -122,6 +128,6 @@ public class PoolManager : MonoBehaviour
     }
 
 
-
+    public GameObject GetRandomEgg() { return eggPool.Dequeue(); }
 }
 

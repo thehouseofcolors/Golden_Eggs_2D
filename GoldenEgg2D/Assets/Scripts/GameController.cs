@@ -7,30 +7,13 @@ using TMPro;
 
 public class GameController : MonoBehaviour
 {
-    [SerializeField] private GameData gameData;
-    [SerializeField] private TextMeshProUGUI scoreText;
+    public GameData myGameData;
 
-
-
-    private int currentScore;
-    private int currentHealth;
-    private int currentLevel;
-
-    private void OnEnable()
+    private void Start()
     {
-        
-    }
-
-    public void InitializeLevel()
-    {
-        currentScore = 0;
-        gameData.CurrentScore = currentScore;
-        currentHealth = gameData.PlayerHealthStart;
-        currentLevel = gameData.CurrentLevel;
-    }
-    public void DisplayScore()
-    {
-        scoreText.text ="Score: "+ currentScore.ToString();
+        // Oyun seviyesini baþlat
+        myGameData.InitializeLevel();
+        CanvasManager.Instance.ChangeCanvasStatus(CanvasStatus.Play);
     }
 
     

@@ -18,7 +18,6 @@ public class CanvasManager : MonoBehaviour
 
     public bool isGameActive;
 
-
     private static CanvasManager instance;
     public static CanvasManager Instance
     {
@@ -32,14 +31,10 @@ public class CanvasManager : MonoBehaviour
         Debug.Log("canvas awakw");
         instance = this;
     }
+
     public event Action<CanvasStatus> CanvasStatusChanged;
     public CanvasStatus currentCanvasStatus;
 
-    private void Start()
-    {
-        Debug.Log("canvas start");
-        ChangeCanvasStatus(CanvasStatus.Play);
-    }
     public void ChangeCanvasStatus(CanvasStatus newStatus)
     {
         if (currentCanvasStatus != newStatus)
