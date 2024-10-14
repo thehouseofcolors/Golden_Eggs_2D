@@ -206,8 +206,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 375741179}
-        m_TargetAssemblyTypeName: CanvasManager, Assembly-CSharp
+      - m_Target: {fileID: 375741190}
+        m_TargetAssemblyTypeName: EntryControl, Assembly-CSharp
         m_MethodName: OnTryAgainButtonClick
         m_Mode: 1
         m_Arguments:
@@ -439,6 +439,7 @@ GameObject:
   - component: {fileID: 375741187}
   - component: {fileID: 375741189}
   - component: {fileID: 375741188}
+  - component: {fileID: 375741190}
   m_Layer: 0
   m_Name: PlayManager
   m_TagString: Untagged
@@ -574,6 +575,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 07406c27a1554c0458077679e3e09c50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &375741190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 375741171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63a7830432e40c64898b83e7b51624b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &512296109
