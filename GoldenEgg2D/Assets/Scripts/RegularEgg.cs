@@ -23,6 +23,6 @@ public class RegularEgg : Egg
     public void AddScore(int amount)
     {
         gameData.CurrentScore += amount;
-        UIControl.Instance.ChangeScore(amount); // Skoru güncelle
+        UIControl.Instance.ChangeScore(amount); 
     }
 }

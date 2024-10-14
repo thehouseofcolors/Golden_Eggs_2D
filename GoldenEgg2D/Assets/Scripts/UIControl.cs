@@ -35,23 +35,25 @@ public class UIControl : MonoBehaviour
     private void OnEnable()
     {
         OnScoreChanged += UpdateScoreDisplay;
+        OnScoreChanged += UpdateScoreDisplay;
     }
     private void OnDestroy()
     {
         OnScoreChanged -= UpdateScoreDisplay;
+        OnScoreChanged -= UpdateScoreDisplay;
     }
     private void Start()
     {
-        UpdateHealthDisplay();
+        UpdateHealthDisplay(myGameData.CurrentHealth);
         UpdateScoreDisplay(myGameData.CurrentScore);
     }
 
 
 
-    public void UpdateHealthDisplay()
+    public void UpdateHealthDisplay(int score)
     {
-        for (int i = 0; i < myGameData.CurrentHealth; i++) { stars[i].sprite = starFilled; }
-        for (int i = myGameData.CurrentHealth; i < stars.Length; i++) { stars[i].sprite = starEmpty; }
+        for (int i = 0; i < score; i++) { stars[i].sprite = starFilled; }
+        for (int i = score; i < stars.Length; i++) { stars[i].sprite = starEmpty; }
     }
 
     public void UpdateScoreDisplay(int score)
