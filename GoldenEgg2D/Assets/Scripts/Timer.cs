@@ -32,15 +32,21 @@ public class Timer : MonoBehaviour
     {
         CanvasManager.Instance.CanvasStatusChanged += HandleTimer;
     }
-    private void OnDestroy()
+    private void OnDisable()
     {
         CanvasManager.Instance.CanvasStatusChanged -= HandleTimer;
     }
 
     private void HandleTimer(CanvasStatus status)
     {
-        if (status==CanvasStatus.Play) { StartTimer();  }
-        else { StopTimer(); }
+        if (status == CanvasStatus.Play)
+        {
+            StartTimer();
+        }
+        else
+        {
+            StopTimer();
+        }
     }
 
 
@@ -63,12 +69,20 @@ public class Timer : MonoBehaviour
         float timeRemaining = gameData.PlayTimeDuration;
         while (timeRemaining >= 0)
         {
-            timerText.text = "Time: " + Mathf.FloorToInt(timeRemaining);
+            UpdateTimerDisplay(timeRemaining);
             yield return new WaitForSeconds(1f);
             timeRemaining -= 1f;
         }
-        StopTimer();
-        CanvasManager.Instance.ChangeCanvasStatus(CanvasStatus.Win);    
+        EndGame();
     }
-
+    private void UpdateTimerDisplay(float timeRemaining)
+    {
+        timerText.text = "Time: " + Mathf.FloorToInt(timeRemaining);
+    }
+    private void EndGame()
+    {
+        StopTimer();
+        gameData.CurrentLevel += 1;
+        CanvasManager.Instance.ChangeCanvasStatus(CanvasStatus.Win);
+    }
 }

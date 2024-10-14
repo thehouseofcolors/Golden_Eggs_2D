@@ -5,47 +5,28 @@ using UnityEngine.SceneManagement;
 
 public class EntryControl : MonoBehaviour
 {
-    public void OnEntryButtonClick()
-    {
-        SceneManager.LoadScene("MainMenu");
-    }
-    public void OnPlayButtonClick()
-    {
-        Debug.Log("play");
-        SceneManager.LoadScene("Game");
-    }
-    public void OnContinueButtonClick()
-    {
-        SceneManager.LoadScene("MainMenu");
-    }
-    public void OnTryAgainButtonClick()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
-    public void OnSettingsButtonClick()
-    {
-        SceneManager.LoadScene("Settings");
-    }
-    public void OnLevelsButtonClick()
-    {
-        SceneManager.LoadScene("Levels");
-    }
+   
+
+    public void OnEntryButtonClick() => LoadScene("MainMenu");
+
+    public void OnPlayButtonClick() => LoadScene("Game");
+    public void OnContinueButtonClick() => LoadScene("MainMenu");
+
+    public void OnTryAgainButtonClick() => LoadScene(SceneManager.GetActiveScene().name);
+  
+    public void OnSettingsButtonClick() => LoadScene("Settings");
+
+    public void OnLevelsButtonClick() => LoadScene("Levels");
 
 
+    public void OnHomeButtonClick() => LoadScene("MainMenu");
+    
 
-
-    private void OnEnable()
+    private void LoadScene(string sceneName)
     {
-        SceneManager.sceneLoaded += OnSceneLoaded;
+        SceneManager.LoadScene(sceneName);
     }
 
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        InitializeLevel();
-    }
+    
 
-    private void InitializeLevel()
-    {
-
-    }
 }

@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+public enum CanvasStatus { Null, Play, Win, GameOver }
+public enum GameStatus { Playing, Paused, Win, GameOver };  
+
 [CreateAssetMenu(fileName ="GameData", menuName ="Game Data", order = 1)]
 public class GameData: ScriptableObject
 {

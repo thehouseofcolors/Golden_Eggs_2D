@@ -7,15 +7,19 @@ using TMPro;
 
 public class GameController : MonoBehaviour
 {
-    public GameData myGameData;
+    public GameData gameData;
 
     private void Start()
     {
         // Oyun seviyesini baþlat
-        myGameData.InitializeLevel();
+        gameData.InitializeLevel();
         CanvasManager.Instance.ChangeCanvasStatus(CanvasStatus.Play);
     }
+    public event Action<int> LevelControl;
 
-    
+    public void LevelChanged(int level)
+    {
+
+    }
 
 }

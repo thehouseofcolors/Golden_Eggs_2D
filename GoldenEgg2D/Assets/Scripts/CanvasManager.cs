@@ -8,7 +8,6 @@ using UnityEngine.SceneManagement;
 using Unity.VisualScripting;
 
 
-public enum CanvasStatus { Null, Play, Win, GameOver }
 
 public class CanvasManager : MonoBehaviour
 {
@@ -74,6 +73,7 @@ public class CanvasManager : MonoBehaviour
                 break;
             case CanvasStatus.Win:
                 win.gameObject.SetActive(true);
+                
                 isGameActive = false;
                 break;
             case CanvasStatus.GameOver: 
