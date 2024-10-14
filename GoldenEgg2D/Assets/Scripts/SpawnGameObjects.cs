@@ -18,11 +18,13 @@ public class SpawnGameObjects : MonoBehaviour
     private void Awake()
     {
         if (instance == null) {instance = this;} else {Destroy(gameObject);}
+        Debug.Log("spawmn objects awake");
     }
 
     private void Start()
     {
         
+        Debug.Log("spawmn objects start");
         SpawnPlayer();
         SpawnChicken();
         SpawnEggs();

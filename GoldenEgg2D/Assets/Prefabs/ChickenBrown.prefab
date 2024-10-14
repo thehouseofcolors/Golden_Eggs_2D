@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 873703628435829152}
   - component: {fileID: 6163316797565449585}
   - component: {fileID: 692612704250161463}
-  - component: {fileID: 4164480205782682188}
   m_Layer: 7
   m_Name: ChickenBrown
   m_TagString: chicken
@@ -156,6 +155,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21f4ee83e440efd44afd13379f983423, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 1
 --- !u!50 &692612704250161463
 Rigidbody2D:
   serializedVersion: 4
@@ -183,15 +183,3 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &4164480205782682188
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1617623097774959144}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 245881fd9d0e88c40a47df03f0378e19, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
