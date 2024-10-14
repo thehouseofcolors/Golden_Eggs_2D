@@ -28,7 +28,12 @@ public class CanvasManager : MonoBehaviour
     }
     private void Awake()
     {
-        Debug.Log("canvas awakw");
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject); // Eðer birden fazla instance varsa mevcut nesneyi yok et
+            return;
+        }
+
         instance = this;
     }
 
@@ -40,14 +45,12 @@ public class CanvasManager : MonoBehaviour
         if (currentCanvasStatus != newStatus)
         {
             currentCanvasStatus = newStatus;
-            CanvasStatusChanged?.Invoke(newStatus); // Olayý tetikle
-            Debug.Log("canvas status changed");
+            CanvasStatusChanged?.Invoke(newStatus); 
         }
     }
 
     private void OnEnable()
     {
-        Debug.Log("canvas onenable");
         CanvasStatusChanged += HandleCanvasChange;
 
     }
