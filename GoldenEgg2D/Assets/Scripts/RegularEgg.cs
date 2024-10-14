@@ -16,13 +16,19 @@ public class RegularEgg : Egg
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Ground")) { PoolManager.Instance.ReAssignEgg(gameObject);}
+        if (collision.gameObject.CompareTag("Ground")) { PoolManager.Instance.ReAssignEgg(gameObject); DecreaseHealth(1); }
         else if (collision.gameObject.CompareTag("Player")) { AddScore(eggScore);  }
     }
     
     public void AddScore(int amount)
     {
-        gameData.CurrentScore += amount;
-        UIControl.Instance.ChangeScore(amount); // Skoru güncelle
+        UIControl.Instance.ChangeScore(amount);
     }
+
+    public void DecreaseHealth(int amount)
+    {
+        UIControl.Instance.ChangeHealth(amount);
+    }
+
+
 }

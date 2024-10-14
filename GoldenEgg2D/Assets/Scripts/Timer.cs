@@ -13,12 +13,18 @@ public class Timer : MonoBehaviour
     [SerializeField] private GameData gameData;
 
     private Coroutine timerCoroutine;
-    private static Timer timer;
-    public static Timer Instance { get { return timer; } }
+    private static Timer instance;
+    public static Timer Instance { get { return instance; } }
 
     private void Awake()
     {
-        timer = this;
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject); // Eðer birden fazla instance varsa mevcut nesneyi yok et
+            return;
+        }
+
+        instance = this;
     }
 
 
@@ -40,7 +46,6 @@ public class Timer : MonoBehaviour
 
     private void StartTimer()
     {
-        Debug.Log("timer start");
         timerCoroutine = StartCoroutine(TimerCoroutine());
     }
     private void StopTimer()

@@ -20,6 +20,7 @@ public class EntryControl : MonoBehaviour
     }
     public void OnTryAgainButtonClick()
     {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
     public void OnSettingsButtonClick()
     {

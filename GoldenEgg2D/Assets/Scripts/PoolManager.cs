@@ -27,8 +27,6 @@ public class PoolManager : MonoBehaviour
         }
 
         _instance = this;
-
-        Debug.Log("PoolManager awake");
     }
    
    
@@ -40,7 +38,6 @@ public class PoolManager : MonoBehaviour
     {
         eggPool = SpawnGameObjects.Instance.eggPool;
         chickenList = SpawnGameObjects.Instance.chickenList;
-        Debug.Log("pool manager start");
     }
 
 

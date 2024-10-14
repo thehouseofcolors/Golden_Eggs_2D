@@ -17,41 +17,63 @@ public class UIControl : MonoBehaviour
     [SerializeField] private Sprite starEmpty; // Boþ yýldýz sprite'ý
 
     public event Action<int> OnScoreChanged; // Skor deðiþtiðinde tetiklenecek event
-
+    public event Action<int> OnHealthChange;
 
     private static UIControl instance;
     public static UIControl Instance {  get { return instance; } }
     private void Awake()
     {
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         instance = this;
     }
-
+    public void ChangeHealth(int health)
+    {
+        Debug.Log($"health changed {health}");
+        myGameData.CurrentHealth -= health;
+        OnHealthChange?.Invoke(myGameData.CurrentHealth);
+    }
     public void ChangeScore(int amount)
     {
-        myGameData.CurrentScore += amount; // Skoru güncelle
-        OnScoreChanged?.Invoke(myGameData.CurrentScore); // Olayý tetikle
+        Debug.Log("score changed");
+        myGameData.CurrentScore += amount;
+        OnScoreChanged?.Invoke(myGameData.CurrentScore); 
     }
 
     private void OnEnable()
     {
         OnScoreChanged += UpdateScoreDisplay;
+        OnHealthChange += UpdateHealthDisplay;
     }
     private void OnDestroy()
     {
         OnScoreChanged -= UpdateScoreDisplay;
+        OnHealthChange -= UpdateHealthDisplay;
     }
     private void Start()
     {
-        UpdateHealthDisplay();
+        UpdateHealthDisplay(myGameData.CurrentHealth);
         UpdateScoreDisplay(myGameData.CurrentScore);
     }
 
 
 
-    public void UpdateHealthDisplay()
+    public void UpdateHealthDisplay(int health)
     {
-        for (int i = 0; i < myGameData.CurrentHealth; i++) { stars[i].sprite = starFilled; }
-        for (int i = myGameData.CurrentHealth; i < stars.Length; i++) { stars[i].sprite = starEmpty; }
+        if (health > 0)
+        {
+            for (int i = 0; i < health; i++) { stars[i].sprite = starFilled; }
+            for (int i = health; i < stars.Length; i++) { stars[i].sprite = starEmpty; }
+        }
+        else if (health==0) 
+        { 
+            CanvasManager.Instance.ChangeCanvasStatus(CanvasStatus.GameOver); 
+        }
+        
     }
 
     public void UpdateScoreDisplay(int score)
