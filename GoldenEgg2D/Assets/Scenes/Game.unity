@@ -38,7 +38,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -206,7 +205,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 375741190}
+      - m_Target: {fileID: 375741184}
         m_TargetAssemblyTypeName: EntryControl, Assembly-CSharp
         m_MethodName: OnTryAgainButtonClick
         m_Mode: 1
@@ -432,10 +431,10 @@ GameObject:
   m_Component:
   - component: {fileID: 375741175}
   - component: {fileID: 375741181}
+  - component: {fileID: 375741186}
   - component: {fileID: 375741179}
   - component: {fileID: 375741184}
   - component: {fileID: 375741185}
-  - component: {fileID: 375741186}
   - component: {fileID: 375741187}
   - component: {fileID: 375741189}
   - component: {fileID: 375741188}
@@ -482,7 +481,6 @@ MonoBehaviour:
   gameOver: {fileID: 1441610627}
   play: {fileID: 310831655}
   isGameActive: 0
-  currentCanvasStatus: 0
 --- !u!222 &375741181
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -516,7 +514,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerText: {fileID: 1366442508}
-  gameData: {fileID: 11400000, guid: d10208cd4c70bbf4ea50a4015b31fa00, type: 2}
 --- !u!114 &375741186
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -529,7 +526,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4d103b0a626b20428421ef5dbe9240f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameData: {fileID: 11400000, guid: d10208cd4c70bbf4ea50a4015b31fa00, type: 2}
 --- !u!114 &375741187
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -542,7 +538,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6abab73840b43be4abb6605d53482cb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myGameData: {fileID: 11400000, guid: d10208cd4c70bbf4ea50a4015b31fa00, type: 2}
   scoreText: {fileID: 833560869}
   stars:
   - {fileID: 731425856}
@@ -562,7 +557,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3db555f5f3e722449896c99ef5160d0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameData: {fileID: 11400000, guid: d10208cd4c70bbf4ea50a4015b31fa00, type: 2}
   playTilemap: {fileID: 1098408808}
   chickenList: []
 --- !u!114 &375741189
@@ -577,18 +571,102 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07406c27a1554c0458077679e3e09c50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &375741190
-MonoBehaviour:
+--- !u!82 &375741190
+AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 375741171}
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63a7830432e40c64898b83e7b51624b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: ac81e521cc4fffd4cb560d4ddc70d306, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &512296109
 GameObject:
   m_ObjectHideFlags: 0
