@@ -9,7 +9,6 @@ using UnityEngine.SocialPlatforms.Impl;
 public class UIControl : MonoBehaviour
 {
 
-    public GameData myGameData;
     [SerializeField] private TextMeshProUGUI scoreText;
 
     [SerializeField] private Image[] stars; // Yýldýzlarý tutacak dizi
@@ -31,16 +30,7 @@ public class UIControl : MonoBehaviour
 
         instance = this;
     }
-    public void ChangeHealth(int health)
-    {
-        myGameData.CurrentHealth -= health;
-        HealthChange?.Invoke(myGameData.CurrentHealth);
-    }
-    public void ChangeScore(int amount)
-    {
-        myGameData.CurrentScore += amount;
-        ScoreChanged?.Invoke(myGameData.CurrentScore); 
-    }
+    
 
     private void OnEnable()
     {
@@ -54,11 +44,20 @@ public class UIControl : MonoBehaviour
     }
     private void Start()
     {
-        UpdateHealthDisplay(myGameData.CurrentHealth);
-        UpdateScoreDisplay(myGameData.CurrentScore);
+        UpdateHealthDisplay(GameData.Instance.CurrentHealth);
+        UpdateScoreDisplay(GameData.Instance.CurrentScore);
     }
 
-
+    public void ChangeHealth(int health)
+    {
+        GameData.Instance.CurrentHealth -= health;
+        HealthChange?.Invoke(GameData.Instance.CurrentHealth);
+    }
+    public void ChangeScore(int amount)
+    {
+        GameData.Instance.CurrentScore += amount;
+        ScoreChanged?.Invoke(GameData.Instance.CurrentScore);
+    }
     public void UpdateHealthDisplay(int health)
     {
         for (int i = 0; i < stars.Length; i++)
@@ -68,7 +67,7 @@ public class UIControl : MonoBehaviour
 
         if (health == 0)
         {
-            CanvasManager.Instance.ChangeCanvasStatus(CanvasStatus.GameOver);
+            GameController.Instance.SetGameStatus(GameStatus.GameOver);
         }
     }
 

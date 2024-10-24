@@ -4,21 +4,36 @@ using UnityEngine;
 
 public class RegularEgg : Egg
 {
-    [SerializeField] private GameData gameData;
     private void Awake()
     {
         eggType = EggType.Regular;
         eggScore = 1;
+        demage = 1;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Ground")) { PoolManager.Instance.ReAssignEgg(gameObject); DecreaseHealth(1); }
-        else if (collision.gameObject.CompareTag("Player")) { PoolManager.Instance.ReAssignEgg(gameObject); AddScore(eggScore);  }
+
+        HandleCollision(collision);
     }
+
+    private void HandleCollision(Collider2D collider)
+    {
+        if (collider.CompareTag("Ground"))
+        {
+            PoolManager.Instance.ReAssignEgg(gameObject);
+            DecreaseHealth(demage);
+        }
+        else if (collider.CompareTag("Player"))
+        {
+            PoolManager.Instance.ReAssignEgg(gameObject);
+            AddScore(eggScore);
+        }
+
+    }
+
+
+
     
     public void AddScore(int amount)
     {

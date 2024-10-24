@@ -5,7 +5,6 @@ using UnityEngine.Tilemaps;
 
 public class SpawnGameObjects : MonoBehaviour
 {
-    [SerializeField] private GameData gameData;
     [SerializeField] private Transform playTilemap;
 
     public List<GameObject> chickenList = new List<GameObject>();
@@ -31,23 +30,23 @@ public class SpawnGameObjects : MonoBehaviour
 
     public void SpawnPlayer()
     {
-        Vector3 spawnPosition = gameData.PlayerPos;
+        Vector3 spawnPosition = GameData.Instance.PlayerPos;
 
-        GameObject player = Instantiate(gameData.PlayerPrefab, spawnPosition, Quaternion.identity);
+        GameObject player = Instantiate(GameData.Instance.PlayerPrefab, spawnPosition, Quaternion.identity);
         player.transform.SetParent(playTilemap);
 
     }
     public void SpawnChicken()
     {
-        Vector3 spawnPosition = gameData.GetChickenPos(0);
+        Vector3 spawnPosition = GameData.Instance.GetChickenPos(0);
         spawnPosition.z = 5;
-        GameObject chicken = Instantiate(gameData.ChickenPrefab, spawnPosition, Quaternion.Euler(0, 90, 0));
+        GameObject chicken = Instantiate(GameData.Instance.ChickenPrefab, spawnPosition, Quaternion.Euler(0, 90, 0));
         chicken.transform.SetParent(playTilemap);
         chickenList.Add(chicken);
 
-        Vector3 _spawnPosition = gameData.GetChickenPos(1);
+        Vector3 _spawnPosition = GameData.Instance.GetChickenPos(1);
         _spawnPosition.z = 5;
-        GameObject _chicken = Instantiate(gameData.ChickenPrefab, _spawnPosition, Quaternion.Euler(0, 90, 0));
+        GameObject _chicken = Instantiate(GameData.Instance.ChickenPrefab, _spawnPosition, Quaternion.Euler(0, 90, 0));
         _chicken.transform.SetParent(playTilemap);
         
         // Mevcut hýz vektörünü al
@@ -69,7 +68,7 @@ public class SpawnGameObjects : MonoBehaviour
             Vector3 eggSpawnPosition = GetRandomChichen().transform.position;
             
             eggSpawnPosition.z = 0;
-            GameObject egg = Instantiate(gameData.RegularEggPrefab, eggSpawnPosition, Quaternion.identity);
+            GameObject egg = Instantiate(GameData.Instance.RegularEggPrefab, eggSpawnPosition, Quaternion.identity);
             egg.transform.SetParent(GetRandomChichen().transform    );
             
             egg.SetActive(false);

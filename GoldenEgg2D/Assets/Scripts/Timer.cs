@@ -10,7 +10,6 @@ public class Timer : MonoBehaviour
 {
 
     [SerializeField] private TextMeshProUGUI timerText;
-    [SerializeField] private GameData gameData;
 
     private Coroutine timerCoroutine;
     private static Timer instance;
@@ -26,27 +25,27 @@ public class Timer : MonoBehaviour
 
         instance = this;
     }
-
+    private void Start()
+    {
+        UpdateTimerDisplay(GameData.Instance.PlayTimeDuration);
+    }
 
     private void OnEnable()
     {
-        CanvasManager.Instance.CanvasStatusChanged += HandleTimer;
+        GameController.Instance.GameStatusChanged += HandleTimer;
     }
-    private void OnDisable()
+    private void OnDestroy()
     {
-        CanvasManager.Instance.CanvasStatusChanged -= HandleTimer;
+        GameController.Instance.GameStatusChanged -= HandleTimer;
     }
 
-    private void HandleTimer(CanvasStatus status)
+    private void HandleTimer(GameStatus status)
     {
-        if (status == CanvasStatus.Play)
+        if (status == GameStatus.Play)
         {
             StartTimer();
         }
-        else
-        {
-            StopTimer();
-        }
+        
     }
 
 
@@ -66,7 +65,7 @@ public class Timer : MonoBehaviour
     private IEnumerator TimerCoroutine()
     {
 
-        float timeRemaining = gameData.PlayTimeDuration;
+        float timeRemaining = GameData.Instance.PlayTimeDuration;
         while (timeRemaining >= 0)
         {
             UpdateTimerDisplay(timeRemaining);
@@ -82,7 +81,6 @@ public class Timer : MonoBehaviour
     private void EndGame()
     {
         StopTimer();
-        gameData.CurrentLevel += 1;
-        CanvasManager.Instance.ChangeCanvasStatus(CanvasStatus.Win);
+        GameController.Instance.SetGameStatus(GameStatus.Win);  
     }
 }
