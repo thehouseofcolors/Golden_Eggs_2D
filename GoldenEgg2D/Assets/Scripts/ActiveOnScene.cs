@@ -4,17 +4,16 @@ using UnityEngine;
 
 public class ActiveOnScene : MonoBehaviour
 {
-
     private void OnEnable()
     {
-        CanvasManager.Instance.CanvasStatusChanged += HandleActiveObjects;
+        GameController.Instance.GameStatusChanged += HandleActiveObjects;
     }
-    private void HandleActiveObjects(CanvasStatus canvasStatus)
+    private void HandleActiveObjects(GameStatus Status)
     {
-        gameObject.SetActive(canvasStatus == CanvasStatus.Play);
+        gameObject.SetActive(Status ==GameStatus.Play);
     }
     private void OnDestroy()
     {
-        CanvasManager.Instance.CanvasStatusChanged -= HandleActiveObjects;
+        GameController.Instance.GameStatusChanged -= HandleActiveObjects;
     }
 }
