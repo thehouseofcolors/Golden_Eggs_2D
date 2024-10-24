@@ -81,6 +81,7 @@ public class Timer : MonoBehaviour
     private void EndGame()
     {
         StopTimer();
-        GameController.Instance.SetGameStatus(GameStatus.Win);  
+        GameController.Instance.SetGameStatus(GameStatus.Win);
+        
     }
 }

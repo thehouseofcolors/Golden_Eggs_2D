@@ -51,8 +51,6 @@ public class CanvasManager : MonoBehaviour
 
     private void HandleTheGame(GameStatus status)
     {
-        Debug.Log("handle the game called");
-
         play.SetActive(false);
         win.SetActive(false);
         gameOver.SetActive(false);

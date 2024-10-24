@@ -23,7 +23,6 @@ public class GameController : MonoBehaviour
     }
     private void Start()
     {
-        Debug.Log("GameController Start");
 
         // Initialize level data
         GameData.Instance.InitializeLevel();
@@ -47,24 +46,14 @@ public class GameController : MonoBehaviour
 
     public void SetGameStatus(GameStatus newStatus)
     {
-        Debug.Log($"Attempting to set GameStatus to: {newStatus}");
         if (GameData.Instance.CurrentGameStatus != newStatus)
         {
             GameData.Instance.CurrentGameStatus = newStatus;
-            Debug.Log("GameStatus changed, invoking GameStatusChanged event.");
             GameStatusChanged?.Invoke(newStatus);
         }
-        else
-        {
-            Debug.Log("GameStatus remains the same, no event triggered.");
-        }
+        
     }
 
-
-    private void LevelUpdate(GameStatus newStatus)
-    {
-        if(newStatus== GameStatus.Win) { GameData.Instance.CurrentLevel += 1; }
-    }
 
 
 

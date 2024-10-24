@@ -15,7 +15,7 @@ public class LevelManager : MonoBehaviour
     }
     private void LevelControl(GameStatus newStatus)
     {
-        if (newStatus == GameStatus.Win) { GameData.Instance.AddLevel(1); }
+        if (newStatus == GameStatus.Win) { GameData.Instance.AddLevel(); }
     }
 
 }

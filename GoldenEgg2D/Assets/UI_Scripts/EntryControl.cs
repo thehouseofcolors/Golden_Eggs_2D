@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class EntryControl : MonoBehaviour
 {
 
-    public AudioSource audioSource;  // Ses kaynaðýný buraya ekleyin
+    [SerializeField] private AudioSource audioSource;  // Ses kaynaðýný buraya ekleyin
     public void OnEntryButtonClick() { LoadScene("MainMenu"); audioSource.Play(); }
 
     public void OnPlayButtonClick() => LoadScene("Game");

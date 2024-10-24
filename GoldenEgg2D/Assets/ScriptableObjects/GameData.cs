@@ -1,6 +1,7 @@
 
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public enum GameStatus { Play, Pause, Win, GameOver };  
@@ -13,15 +14,7 @@ public class GameData: ScriptableObject
     {
         get
         {
-            // Check if the instance is null and load the ScriptableObject from Resources
-            if (instance == null)
-            {
-                instance = Resources.Load<GameData>("MyGameData");
-                if (instance == null)
-                {
-                    Debug.LogError("GameData instance not found! Make sure to create a GameData asset in the Resources folder.");
-                }
-            }
+            instance = Resources.Load<GameData>("MyGameData");
             return instance;
         }
     }
@@ -30,6 +23,9 @@ public class GameData: ScriptableObject
     [SerializeField] private GameObject chickenPrefab;
     [SerializeField] private GameObject regularEggPrefab;
     [SerializeField] private GameObject goldenEggPrefab;
+
+
+    [SerializeField] private Sprite[] levels;
 
     [SerializeField]
     private Vector3 _parentChickenPos = new Vector3(0, 4, 5);
@@ -66,9 +62,9 @@ public class GameData: ScriptableObject
         get { return _currentLevel; }
         set { _currentLevel = value; }
     }
-    public int AddLevel(int level)
+    public void AddLevel()
     {
-        return _currentLevel += level;
+        _currentLevel += 1;
 
     }
 

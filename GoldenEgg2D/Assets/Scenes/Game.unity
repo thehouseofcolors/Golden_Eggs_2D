@@ -432,6 +432,7 @@ GameObject:
   - component: {fileID: 375741175}
   - component: {fileID: 375741181}
   - component: {fileID: 375741186}
+  - component: {fileID: 375741195}
   - component: {fileID: 375741179}
   - component: {fileID: 375741185}
   - component: {fileID: 375741187}
@@ -961,6 +962,18 @@ MonoBehaviour:
   playAudio: {fileID: 375741190}
   winAudio: {fileID: 375741193}
   gameoverAudio: {fileID: 375741192}
+--- !u!114 &375741195
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 375741171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 429019442e10f9d499f27eef85110f0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &512296109
 GameObject:
   m_ObjectHideFlags: 0
