@@ -35,31 +35,22 @@ public class CanvasManager : MonoBehaviour
 
         instance = this;
     }
-
-    public event Action<CanvasStatus> CanvasStatusChanged;
-    public CanvasStatus currentCanvasStatus;
-
-    public void ChangeCanvasStatus(CanvasStatus newStatus)
-    {
-        if (currentCanvasStatus != newStatus)
-        {
-            currentCanvasStatus = newStatus;
-            CanvasStatusChanged?.Invoke(newStatus); 
-        }
-    }
-
     private void OnEnable()
     {
-        CanvasStatusChanged += HandleCanvasChange;
+        GameController.Instance.GameStatusChanged += HandleTheGame;
 
     }
+   
+
+    
     private void OnDestroy()
     {
-        CanvasStatusChanged -= HandleCanvasChange;
+        GameController.Instance.GameStatusChanged -= HandleTheGame;
     }
-    
-    private void HandleCanvasChange(CanvasStatus status)
+
+    private void HandleTheGame(GameStatus status)
     {
+        Debug.Log("handle the game called");
 
         play.SetActive(false);
         win.SetActive(false);
@@ -67,30 +58,24 @@ public class CanvasManager : MonoBehaviour
 
         switch (status)
         {
-            case CanvasStatus.Play:
+            case GameStatus.Play:
                 play.gameObject.SetActive(true);
                 isGameActive = true;
                 break;
-            case CanvasStatus.Win:
+            case GameStatus.Win:
                 win.gameObject.SetActive(true);
-                
+
                 isGameActive = false;
                 break;
-            case CanvasStatus.GameOver: 
+            case GameStatus.GameOver:
                 gameOver.gameObject.SetActive(true);
-                isGameActive = false; 
+                isGameActive = false;
                 break;
 
         }
     }
 
-    
-    public void OnStartButtonClick() 
-    { 
-        ChangeCanvasStatus(CanvasStatus.Play); 
-        Debug.Log("start click");
-    }
-    
+
 }
 
 
