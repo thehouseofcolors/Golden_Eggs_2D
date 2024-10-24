@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -60,5 +61,21 @@ public class GameController : MonoBehaviour
     }
 
 
+    private void LevelUpdate(GameStatus newStatus)
+    {
+        if(newStatus== GameStatus.Win) { GameData.Instance.CurrentLevel += 1; }
+    }
+
+
+
+    public void OnContinueButtonClick() { LoadScene("MainMenu"); }
+
+    public void OnTryAgainButtonClick() { LoadScene(SceneManager.GetActiveScene().name); }
+
+
+    private void LoadScene(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
+    }
 
 }

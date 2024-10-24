@@ -1,30 +1,38 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour
 {
-    public AudioSource audioSource;  // Ses kaynaðýný buraya ekleyin
+    [SerializeField] private AudioSource playAudio;
+    [SerializeField] private AudioSource winAudio;
+    [SerializeField] private AudioSource gameoverAudio;
+    
 
-    void Start()
+
+    private void OnEnable()
     {
-        // Oyunun baþladýðýnda sesi çal
-        audioSource.Play();
+        GameController.Instance.GameStatusChanged += HandleAudio; 
     }
-
-    public void PlaySound()
+    private void OnDestroy()
     {
-        if (!audioSource.isPlaying)
+        GameController.Instance.GameStatusChanged -= HandleAudio;
+    }
+    private void HandleAudio(GameStatus status)
+    {
+        playAudio.Stop();
+        winAudio.Stop();
+        gameoverAudio.Stop();
+        switch (status)
         {
-            audioSource.Play();
+            case GameStatus.Play: playAudio.Play(); break;
+            case GameStatus.Win: winAudio.Play(); break;
+            case GameStatus.GameOver: gameoverAudio.Play(); break;
+            default: break;
+
         }
     }
 
-    public void StopSound()
-    {
-        if (audioSource.isPlaying)
-        {
-            audioSource.Stop();
-        }
-    }
+    
 }

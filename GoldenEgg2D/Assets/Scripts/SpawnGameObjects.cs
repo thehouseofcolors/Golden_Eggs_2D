@@ -11,6 +11,9 @@ public class SpawnGameObjects : MonoBehaviour
 
     public Queue<GameObject> eggPool = new Queue<GameObject>();
 
+    private List<Vector3> chickenPosList= new List<Vector3>();
+    
+
     private static SpawnGameObjects instance;
     public static SpawnGameObjects Instance {  get { return instance; } }
 
@@ -21,9 +24,10 @@ public class SpawnGameObjects : MonoBehaviour
 
     private void Start()
     {
-        
+        chickenPosList.Add(GameData.Instance.ChickenPos);
         SpawnPlayer();
-        SpawnChicken();
+        for(int i = 0; i < GameData.Instance.CurrentLevel; i++) { SpawnChicken(); }
+        
         SpawnEggs();
     }
 
@@ -38,26 +42,12 @@ public class SpawnGameObjects : MonoBehaviour
     }
     public void SpawnChicken()
     {
-        Vector3 spawnPosition = GameData.Instance.GetChickenPos(0);
-        spawnPosition.z = 5;
-        GameObject chicken = Instantiate(GameData.Instance.ChickenPrefab, spawnPosition, Quaternion.Euler(0, 90, 0));
-        chicken.transform.SetParent(playTilemap);
-        chickenList.Add(chicken);
-
-        Vector3 _spawnPosition = GameData.Instance.GetChickenPos(1);
-        _spawnPosition.z = 5;
+        Vector3 _spawnPosition = chickenPosList[chickenPosList.Count-1];
+        _spawnPosition.y -= 1;
         GameObject _chicken = Instantiate(GameData.Instance.ChickenPrefab, _spawnPosition, Quaternion.Euler(0, 90, 0));
         _chicken.transform.SetParent(playTilemap);
-        
-        // Mevcut hýz vektörünü al
-        Vector2 currentVelocity = _chicken.GetComponent<Rigidbody2D>().velocity;
-
-        // Hýzý artýr
-        currentVelocity += new Vector2(1f, 0); // X ekseninde hýz artýrma
-
-        // Yeni hýzý ata
-        _chicken.GetComponent<Rigidbody2D>().velocity = currentVelocity;
-
+        chickenPosList.Add(_spawnPosition);
+        //_chicken.GetComponent<Rigidbody2D>().velocity *= 1;
         chickenList.Add(_chicken);
 
     }

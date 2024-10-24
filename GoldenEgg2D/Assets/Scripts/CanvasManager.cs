@@ -15,6 +15,7 @@ public class CanvasManager : MonoBehaviour
     [SerializeField] private GameObject gameOver;
     [SerializeField] private GameObject play;
 
+   
     public bool isGameActive;
 
     private static CanvasManager instance;

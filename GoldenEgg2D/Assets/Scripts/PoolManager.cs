@@ -9,6 +9,10 @@ public class PoolManager : MonoBehaviour
 
     private List<GameObject> chickenList;
     private Queue<GameObject> eggPool;
+    private float initialDropInterval = 2f; // Baþlangýçta yumurta düþme aralýðý
+    private float dropIntervalDecreaseRate = 0.01f; // Azalma miktarý
+    private float minimumDropInterval = 1f; // Minimum düþme aralýðý
+    private float currentDropInterval; // Þu anki düþme aralýðý
 
     private Coroutine dropEggsCoroutine;
     private static PoolManager _instance;
@@ -34,6 +38,7 @@ public class PoolManager : MonoBehaviour
     {
         eggPool = SpawnGameObjects.Instance.eggPool;
         chickenList = SpawnGameObjects.Instance.chickenList;
+        currentDropInterval = initialDropInterval;
     }
 
 
@@ -88,7 +93,10 @@ public class PoolManager : MonoBehaviour
             if (egg != null)
             {
                 DropEgg(egg);
-                yield return new WaitForSeconds(2f);
+                yield return new WaitForSeconds(currentDropInterval);
+
+                // Zaman aralýðýný azalt
+                currentDropInterval = Mathf.Max(currentDropInterval - dropIntervalDecreaseRate, minimumDropInterval);
             }
             else
             {

@@ -16,11 +16,9 @@ MonoBehaviour:
   chickenPrefab: {fileID: 1617623097774959144, guid: 829d5fa9465ade643be56fa5bccf0136, type: 3}
   regularEggPrefab: {fileID: 3870152455136529767, guid: 6dcec8e943bd2e8429097721a3710e51, type: 3}
   goldenEggPrefab: {fileID: 4628658415589742160, guid: 3cc08c93e8305c8478fcf1783fcb7ec2, type: 3}
-  _parentChickenPos:
-  - {x: 0, y: 3.5, z: 0}
-  - {x: 0, y: 2, z: 0}
+  _parentChickenPos: {x: 0, y: 4, z: 0}
   _playerPos: {x: 0, y: -4, z: 0}
   _playTimeDuration: 30
   _currentLevel: 1
-  _currentScore: 0
-  _currentHealth: 3
+  _currentScore: 2
+  _currentHealth: 0

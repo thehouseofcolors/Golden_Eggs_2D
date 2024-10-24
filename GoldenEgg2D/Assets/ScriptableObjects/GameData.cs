@@ -32,7 +32,7 @@ public class GameData: ScriptableObject
     [SerializeField] private GameObject goldenEggPrefab;
 
     [SerializeField]
-    private Vector3[] _parentChickenPos;
+    private Vector3 _parentChickenPos = new Vector3(0, 4, 5);
     [SerializeField]
     private Vector3 _playerPos = new Vector3(0, -4, 0);
     
@@ -43,7 +43,8 @@ public class GameData: ScriptableObject
     public GameObject RegularEggPrefab => regularEggPrefab;
     public GameObject GoldenEggPrefab => goldenEggPrefab;
     public Vector3 PlayerPos => _playerPos;
-
+    public Vector3 ChickenPos  => _parentChickenPos;
+    
 
     // Properties with both getter and setter
     [SerializeField]
@@ -92,8 +93,5 @@ public class GameData: ScriptableObject
         CurrentHealth=3; CurrentScore=0;
     }
 
-    public Vector3 GetChickenPos(int index)
-    {
-        return _parentChickenPos[index];
-    }
+    
 }
