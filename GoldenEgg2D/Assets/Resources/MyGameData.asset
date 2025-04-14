@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MyGameData
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 6383398436628236000, guid: 1ac976c66b08acb4bbe94a23c0c12c33, type: 3}
-  chickenPrefab: {fileID: 1617623097774959144, guid: 829d5fa9465ade643be56fa5bccf0136, type: 3}
+  chickenPrefab: {fileID: 1206511787925574, guid: 3b1e3e9155d404942bc65d9aa80120ba, type: 3}
   regularEggPrefab: {fileID: 3870152455136529767, guid: 6dcec8e943bd2e8429097721a3710e51, type: 3}
   goldenEggPrefab: {fileID: 4628658415589742160, guid: 3cc08c93e8305c8478fcf1783fcb7ec2, type: 3}
   levels:
@@ -25,6 +25,6 @@ MonoBehaviour:
   _parentChickenPos: {x: 0, y: 4, z: 0}
   _playerPos: {x: 0, y: -4, z: 0}
   _playTimeDuration: 30
-  _currentLevel: 1
-  _currentScore: 2
-  _currentHealth: 0
+  _currentLevel: 2
+  _currentScore: 1
+  _currentHealth: 3

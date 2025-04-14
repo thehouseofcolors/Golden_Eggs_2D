@@ -10,12 +10,11 @@ public class UIControl : MonoBehaviour
 {
 
     [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private Image[] stars; // Yï¿½ldï¿½zlarï¿½ tutacak dizi
+    [SerializeField] private Sprite starFilled; // Dolu yï¿½ldï¿½z sprite'ï¿½
+    [SerializeField] private Sprite starEmpty; // Boï¿½ yï¿½ldï¿½z sprite'ï¿½
 
-    [SerializeField] private Image[] stars; // Yýldýzlarý tutacak dizi
-    [SerializeField] private Sprite starFilled; // Dolu yýldýz sprite'ý
-    [SerializeField] private Sprite starEmpty; // Boþ yýldýz sprite'ý
-
-    public event Action<int> ScoreChanged; // Skor deðiþtiðinde tetiklenecek event
+    public event Action<int> ScoreChanged; // Skor deï¿½iï¿½tiï¿½inde tetiklenecek event
     public event Action<int> HealthChange;
 
     private static UIControl instance;
