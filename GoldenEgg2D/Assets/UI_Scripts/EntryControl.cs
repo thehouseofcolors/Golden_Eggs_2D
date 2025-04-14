@@ -2,11 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class EntryControl : MonoBehaviour
 {
 
-    [SerializeField] private AudioSource audioSource;  // Ses kaynaðýný buraya ekleyin
+    [SerializeField] private AudioSource audioSource;  // Ses kaynaï¿½ï¿½nï¿½ buraya ekleyin
+    [SerializeField] private Image image;
+    [SerializeField] private GameData gameData;
+    public void Start()
+    {
+        image.sprite=gameData.GetLevelSprite(gameData.CurrentLevel);
+    }
     public void OnEntryButtonClick() { LoadScene("MainMenu"); audioSource.Play(); }
 
     public void OnPlayButtonClick() => LoadScene("Game");

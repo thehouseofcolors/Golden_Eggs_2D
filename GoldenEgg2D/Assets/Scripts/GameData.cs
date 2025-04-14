@@ -40,7 +40,7 @@ public class GameData: ScriptableObject
     public GameObject GoldenEggPrefab => goldenEggPrefab;
     public Vector3 PlayerPos => _playerPos;
     public Vector3 ChickenPos  => _parentChickenPos;
-    
+    public Sprite GetLevelSprite(int level) => levels[level -1];
 
     // Properties with both getter and setter
     [SerializeField]

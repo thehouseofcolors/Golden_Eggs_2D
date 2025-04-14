@@ -22,7 +22,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: ed5a54fe08d997d418a7c533ae18afed, type: 3}
   - {fileID: 21300000, guid: a6107d567eaed494c91c5dcd0b537000, type: 3}
   - {fileID: 21300000, guid: 7a6034b18634f054eba58913c6f558e9, type: 3}
-  _parentChickenPos: {x: 0, y: 4, z: 0}
+  _parentChickenPos: {x: 0, y: 3, z: 0}
   _playerPos: {x: 0, y: -4, z: 0}
   _playTimeDuration: 30
   _currentLevel: 1

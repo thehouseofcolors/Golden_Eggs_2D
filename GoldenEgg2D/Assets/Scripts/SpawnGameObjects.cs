@@ -44,7 +44,7 @@ public class SpawnGameObjects : MonoBehaviour
     {
         Vector3 _spawnPosition = chickenPosList[chickenPosList.Count-1];
         _spawnPosition.y -= 1;
-        GameObject _chicken = Instantiate(GameData.Instance.ChickenPrefab, _spawnPosition, Quaternion.Euler(0, 90, 0));
+        GameObject _chicken = Instantiate(GameData.Instance.ChickenPrefab, _spawnPosition, Quaternion.Euler(0, 0, 0));
         _chicken.transform.SetParent(playTilemap);
         chickenPosList.Add(_spawnPosition);
         //_chicken.GetComponent<Rigidbody2D>().velocity *= 1;
