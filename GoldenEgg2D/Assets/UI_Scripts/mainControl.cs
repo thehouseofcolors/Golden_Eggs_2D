@@ -4,12 +4,17 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class EntryControl : MonoBehaviour
+public class MainControl : MonoBehaviour
 {
 
     [SerializeField] private AudioSource audioSource;  // Ses kayna��n� buraya ekleyin
-
+    [SerializeField] private Image image;
+    [SerializeField] private GameData gameData;
     
+    public void Start()
+    {
+        image.sprite=gameData.GetLevelSprite(gameData.CurrentLevel);
+    }
     public void OnEntryButtonClick() { LoadScene("MainMenu"); audioSource.Play(); }
 
     public void OnPlayButtonClick() => LoadScene("Game");

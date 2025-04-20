@@ -462,6 +462,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioSource: {fileID: 941592992}
+  image: {fileID: 0}
+  gameData: {fileID: 11400000, guid: d10208cd4c70bbf4ea50a4015b31fa00, type: 2}
 --- !u!82 &941592992
 AudioSource:
   m_ObjectHideFlags: 0
