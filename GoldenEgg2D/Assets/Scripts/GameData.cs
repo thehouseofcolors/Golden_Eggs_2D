@@ -3,34 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-
-public enum GameStatus { Play, Pause, Win, GameOver };  
+ 
 
 [CreateAssetMenu(fileName ="GameData", menuName ="Game Data", order = 1)]
 public class GameData: ScriptableObject
 {
-    private static GameData instance;
-    public static GameData Instance
-    {
-        get
-        {
-            instance = Resources.Load<GameData>("MyGameData");
-            return instance;
-        }
-    }
+    [SerializeField] private Sprite[] levels;
 
+
+    [Header("Prefabs")]
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private GameObject chickenPrefab;
     [SerializeField] private GameObject regularEggPrefab;
     [SerializeField] private GameObject goldenEggPrefab;
 
 
-    [SerializeField] private Sprite[] levels;
+    
 
-    [SerializeField]
-    private Vector3 _parentChickenPos = new Vector3(0, 4, 5);
-    [SerializeField]
-    private Vector3 _playerPos = new Vector3(0, -4, 0);
     
     // Read-only properties
 
@@ -38,56 +27,23 @@ public class GameData: ScriptableObject
     public GameObject ChickenPrefab => chickenPrefab;
     public GameObject RegularEggPrefab => regularEggPrefab;
     public GameObject GoldenEggPrefab => goldenEggPrefab;
-    public Vector3 PlayerPos => _playerPos;
-    public Vector3 ChickenPos  => _parentChickenPos;
-    public Sprite GetLevelSprite(int level) => levels[level -1];
-
-    // Properties with both getter and setter
-    [SerializeField]
-    private int _playTimeDuration = 30;
-    public int PlayTimeDuration => _playTimeDuration;
-
-    private GameStatus _status = GameStatus.Pause;
-    public GameStatus CurrentGameStatus
+    
+    public Sprite GetLevelSprite(int level)
     {
-        get { return _status; }
-        set { _status = value; }
+        if (level <= 0 || level > levels.Length)
+        {
+            Debug.LogWarning("Invalid level index");
+            return null; // veya bir varsayılan sprite dönebilirsiniz
+        }
+        return levels[level - 1];
     }
 
 
-    [SerializeField]
-    private int _currentLevel = 1;
-    public int CurrentLevel
-    {
-        get { return _currentLevel; }
-        set { _currentLevel = value; }
-    }
-    public void AddLevel()
-    {
-        _currentLevel += 1;
 
-    }
+    
+    
 
-    [SerializeField]
-    private int _currentScore = 0;
-    public int CurrentScore
-    {
-        get { return _currentScore; }
-        set { _currentScore = value; }
-    }
-
-    [SerializeField]
-    private int _currentHealth = 3;
-    public int CurrentHealth
-    {
-        get { return _currentHealth; }
-        set { _currentHealth = value; }
-    }
-
-    public void InitializeLevel()
-    {
-        CurrentHealth=3; CurrentScore=0;
-    }
+    
 
     
 }
