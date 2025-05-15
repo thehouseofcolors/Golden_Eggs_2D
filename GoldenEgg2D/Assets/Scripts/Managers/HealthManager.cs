@@ -1,20 +1,15 @@
 using System;
 using UnityEngine;
-public struct HealthChangedEvent
-{
-    public int CurrentHealth;
-
-    public HealthChangedEvent(int currentHealth)
-    {
-        CurrentHealth = currentHealth;
-    }
-}
 
 public class HealthManager : MonoBehaviour
 {
     private int currentHealth;
 
-
+    void Start()
+    {
+        currentHealth = 3; //sonra bunu merkezi bir yerden al
+        
+    }
     // Sağlık değiştiğinde çağrılacak method
     public void LoseLife()
     {

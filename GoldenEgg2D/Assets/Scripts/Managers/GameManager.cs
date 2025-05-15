@@ -1,7 +1,5 @@
 
 
-// GameStatusChangedEvent: Oyun durumu değiştiğinde tetiklenen event
-
 
 public enum GameStatus
 {
@@ -11,20 +9,13 @@ public enum GameStatus
     GameOver
 }
 
-public struct GameStatusChangedEvent
-{
-    public GameStatus NewStatus;
 
-    public GameStatusChangedEvent(GameStatus newStatus)
-    {
-        NewStatus = newStatus;
-    }
-}
 
 
 public class GameManager : Singleton<GameManager>
 {
     private int score;
+    private int level;
     private GameStatus gameStatus;
 
 
@@ -37,6 +28,7 @@ public class GameManager : Singleton<GameManager>
         // Skor ve oyun durumu başlangıcını eventler ile bildir
         EventBus.Publish(new ScoreChangedEvent(score));
         EventBus.Publish(new GameStatusChangedEvent(gameStatus));
+
     }
 
     // Skor değiştiğinde çağrılacak fonksiyon
