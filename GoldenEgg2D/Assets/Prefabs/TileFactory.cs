@@ -9,29 +9,6 @@ public interface ITile<T> where T : System.Enum
     int count { get; }
 }
 
-[System.Serializable]
-public class GroundTile : ITile<GroundType>
-{
-    public GroundType groundType;
-    public GameObject prefab;
-    public int count;
-    
-    public GroundType Type => groundType;
-    GameObject ITile<GroundType>.prefab => prefab;
-    int ITile<GroundType>.count => count;
-}
-
-[System.Serializable]
-public struct ObjectTile : ITile<ObjectType>
-{
-    public ObjectType objectType;
-    public GameObject prefab;
-    public int count;
-    
-    public ObjectType Type => objectType;
-    GameObject ITile<ObjectType>.prefab => prefab;
-    int ITile<ObjectType>.count => count;
-}
 
 public enum ObjectType { obs_1, egg, empty }
 public enum GroundType { grn_1 }
@@ -43,10 +20,23 @@ public class TileFactory : Singleton<TileFactory>
 
     private Dictionary<GroundType, Queue<GameObject>> groundPool;
     private Dictionary<ObjectType, Queue<GameObject>> objectPool;
-
+    List<GroundTile> groundTypes = new List<GroundType>();
+    List<ObjectType> objectTypes = new List<ObjectType>();
     void Awake()
     {
+        groundTypes = CacheTileTypes<GroundController, GroundType>(groundPrefabs, c => c.groundTile.groundType);
+        objectTypes = CacheTileTypes<ObjectController, ObjectType>(objectPrefabs, c => c.objectTile.objectType);
+
         InitializePools();
+    }
+    private List<TEnum> CacheTileTypes<TController, TEnum>( TController[] controllers, Func<TController, TEnum> selector)
+    {
+        var types = new List<TEnum>();
+        foreach (var controller in controllers)
+        {
+            types.Add(selector(controller));
+        }
+        return types;
     }
 
     private void InitializePools()
@@ -63,10 +53,8 @@ public class TileFactory : Singleton<TileFactory>
         }
     }
 
-    private Dictionary<TEnum, Queue<GameObject>> CreateTilePool<TController, TEnum>(
-        TController[] controllers, 
-        Func<TController, ITile<TEnum>> tileSelector) 
-        where TEnum : System.Enum
+    private Dictionary<TEnum, Queue<GameObject>> CreateTilePool<TController, TEnum>
+        (TController[] controllers, Func<TController, ITile<TEnum>> tileSelector) where TEnum : System.Enum
     {
         if (controllers == null || controllers.Length == 0)
         {
@@ -104,45 +92,64 @@ public class TileFactory : Singleton<TileFactory>
                 pool[tile.Type] = queue;
             }
         }
+        Debug.Log("pool created");
 
         return pool;
     }
 
-    public GameObject GetGroundTile(GroundType groundType)
+    public GameObject GetSceneTile()
     {
-        return GetTile(groundPool, groundType);
+        GameObject ground = GetRandomGroundTile();
+        GameObject obj = GetRandomObjectTile();
+        obj.transform.SetParent(obj.transform);
+        return ground;
+    }
+    private GameObject GetRandomGroundTile()
+    {
+        if (groundTypes == null || groundTypes.Count == 0)
+        {
+            Debug.LogError("Ground types list is empty!");
+            return null;
+        }
+
+        var randomIndex = UnityEngine.Random.Range(0, groundTypes.Count);
+        var randomType = groundTypes[randomIndex];
+
+        return GetTile(groundPool, randomType);
     }
 
-    public GameObject GetObjectTile(ObjectType objectType)
-    {
-        return GetTile(objectPool, objectType);
-    }
 
-    private GameObject GetTile<TEnum>(Dictionary<TEnum, Queue<GameObject>> pool, TEnum type) 
+    private GameObject GetRandomObjectTile()
+    {
+        if (objectTypes == null || objectTypes.Count == 0)
+        {
+            Debug.LogError("Object types list is empty!");
+            return null;
+        }
+
+        int randomIndex = UnityEngine.Random.Range(0, objectTypes.Count);
+        ObjectType randomType = objectTypes[randomIndex];
+        if (randomType == ObjectType.empty) return null;
+        return GetTile(objectPool, randomType);
+    }
+    
+
+
+    private GameObject GetTile<TEnum>(Dictionary<TEnum, Queue<GameObject>> pool, TEnum type)
         where TEnum : System.Enum
     {
-        if (pool == null)
+        if (pool != null && 
+            pool.TryGetValue(type, out var queue) && 
+            queue != null && 
+            queue.Count > 0)
         {
-            Debug.LogError($"{typeof(TEnum).Name} pool has not been initialized!");
-            return null;
+            return queue.Dequeue();
         }
 
-        if (!pool.TryGetValue(type, out var queue))
-        {
-            Debug.LogError($"No pool exists for {typeof(TEnum).Name}: {type}");
-            return null;
-        }
-
-        if (queue.Count == 0)
-        {
-            Debug.LogWarning($"Pool exhausted for {typeof(TEnum).Name}: {type}");
-            return null;
-        }
-
-        var instance = queue.Dequeue();
-        instance.SetActive(true);
-        return instance;
+        return null;
     }
+
+
 
     public void ReleaseGroundTile(GroundType type, GameObject tile)
     {

@@ -1,154 +1,107 @@
 using UnityEngine;
 using System.Collections;
 
-public class GroundSpawner : MonoBehaviour
+
+public class Spawner : Singleton<Spawner>
 {
-    [Header("Boundary Settings")]
-    public Transform startLine;  // Drag your starting line object here
-    public Transform endLine;    // Drag your ending line object here
-    public float spawnInterval = 1f;
+    [SerializeField] public PoolManager _config;
 
-    [Header("Tile Settings")]
-    public int tilesPerRow = 3;
-    public float tileLength = 2f;
+    // Cached references for performance
+    private Transform _startLine;
+    private Transform _endLine;
+    private float _tileLength;
+    private int _tilesPerRow;
 
-    [Header("References")]
-    public bool autoStartSpawning = false;
+    protected bool IsSpawning { get; private set; }
+    protected Transform GroundParent => _config.groundParent;
+    protected Transform ObjectParent => _config.objectParent;
 
-    private Coroutine spawningCoroutine;
-    private bool isSpawning = false;
-
-    void Start()
+    protected void Awake()
     {
-        if (autoStartSpawning)
-        {
+        CacheConfigValues();
+
+        if (_config.autoStartSpawning)
             StartSpawning();
+
+        SpawnPlayer();
+    }
+
+    private void CacheConfigValues()
+    {
+        _startLine = _config.startLine;
+        _endLine = _config.endLine;
+        _tileLength = _config.tileLength;
+        _tilesPerRow = _config.tilesPerRow;
+    }
+
+    private void SpawnPlayer()
+    {
+        if (_config.playerPrefab != null)
+        {
+            Instantiate(_config.playerPrefab, _config.playerPos, Quaternion.identity);
         }
     }
 
     public void StartSpawning()
     {
-        if (!isSpawning)
+        if (!IsSpawning)
         {
-            isSpawning = true;
-            spawningCoroutine = StartCoroutine(SpawnTilesContinuously());
+            IsSpawning = true;
+            StartCoroutine(SpawnRoutine());
         }
     }
 
     public void StopSpawning()
     {
-        if (isSpawning)
+        IsSpawning = false;
+    }
+
+    private IEnumerator SpawnRoutine()
+    {
+        var waitInterval = new WaitForSeconds(_config.spawnInterval);
+
+        while (IsSpawning)
         {
-            isSpawning = false;
-            if (spawningCoroutine != null)
-            {
-                StopCoroutine(spawningCoroutine);
-            }
+            SpawnTileRow();
+            SpawnObjectRow();
+            yield return waitInterval;
         }
     }
 
-    IEnumerator SpawnTilesContinuously()
+    protected Vector3 GetSpawnPosition(int laneIndex)
     {
-        // Initialize spawn position at start line
-        float nextSpawnZ = startLine.position.z;
-        
-        while (isSpawning)
-        {
-            SpawnTileRow();
-            yield return new WaitForSeconds(spawnInterval);
-        }
+        float xPos = laneIndex * _tileLength - _tileLength * (_tilesPerRow - 1) * 0.5f;
+        return new Vector3(xPos, 0, _startLine.position.z);
     }
 
     public void SpawnTileRow()
     {
-        for (int i = 0; i < tilesPerRow; i++)
+        if (TileFactory.Instance == null) return;
+
+        for (int i = 0; i < _config.tilesPerRow; i++)
         {
-            float xPos = i * tileLength - tileLength * (tilesPerRow - 1) / 2f;
-            Vector3 spawnPos = new Vector3(xPos, 0, startLine.position.z);
-            
-            GameObject tile = TileFactory.Instance.GetGroundTile(GroundType.grn_1);
-            tile.transform.position = spawnPos;
-            tile.GetComponent<GroundController>().SetMoving(true);
+            var tile = TileFactory.Instance.GetRandomGroundTile();
+            if (tile != null)
+            {
+                tile.transform.SetParent(GroundParent);
+                tile.transform.position = GetSpawnPosition(i);
+            }
         }
     }
-
-
-    #if UNITY_EDITOR
-    void OnDrawGizmos()
+    public void SpawnObjectRow()
     {
-        if (startLine != null && endLine != null)
+        if (TileFactory.Instance == null) return;
+
+        for (int i = 0; i < _config.tilesPerRow; i++)
         {
-            // Calculate the three lane positions
-            float leftLane = -tileLength;   // Left tile position (-2 units)
-            float centerLane = 0f;          // Center tile position
-            float rightLane = tileLength;    // Right tile position (+2 units)
-
-            // Draw three parallel guide lines from start to end
-            DrawLaneGuide(startLine.position.z, endLine.position.z, leftLane, Color.cyan);
-            DrawLaneGuide(startLine.position.z, endLine.position.z, centerLane, Color.magenta);
-            DrawLaneGuide(startLine.position.z, endLine.position.z, rightLane, Color.cyan);
-
-            // Draw start/end markers
-            DrawBoundaryMarkers(startLine.position.z, "START", Color.green);
-            DrawBoundaryMarkers(endLine.position.z, "END", Color.red);
-        }
-    }
-
-    void DrawLaneGuide(float startZ, float endZ, float xPos, Color color)
-    {
-        Gizmos.color = color;
-        Vector3 startPos = new Vector3(xPos, 0, startZ);
-        Vector3 endPos = new Vector3(xPos, 0, endZ);
-        
-        // Main guide line
-        Gizmos.DrawLine(startPos, endPos);
-        
-        // Add arrow indicators every 2 units
-        for (float z = startZ; z < endZ; z += 2f)
-        {
-            Vector3 arrowPos = new Vector3(xPos, 0, z);
-            Gizmos.DrawLine(arrowPos, arrowPos + new Vector3(0.2f, 0, 0.2f));
-            Gizmos.DrawLine(arrowPos, arrowPos + new Vector3(-0.2f, 0, 0.2f));
-        }
-    }
-
-    void DrawBoundaryMarkers(float zPos, string label, Color color)
-    {
-        float halfWidth = tileLength * 1.5f; // 3 tiles wide (1.5 each side)
-        
-        Gizmos.color = color;
-        Gizmos.DrawLine(
-            new Vector3(-halfWidth, 0, zPos),
-            new Vector3(halfWidth, 0, zPos)
-        );
-        
-        // Label
-        UnityEditor.Handles.Label(
-            new Vector3(-halfWidth - 1f, 0, zPos), 
-            label, 
-            new GUIStyle() { normal = new GUIStyleState() { textColor = color } }
-        );
-        
-        // Boundary indicators
-        Gizmos.DrawCube(new Vector3(-halfWidth, 0, zPos), Vector3.one * 0.3f);
-        Gizmos.DrawCube(new Vector3(halfWidth, 0, zPos), Vector3.one * 0.3f);
-    }
-    #endif
-
-}
-
-#if UNITY_EDITOR
-[UnityEditor.CustomEditor(typeof(GroundSpawner))]
-public class GroundSpawnerEditor : UnityEditor.Editor
-{
-    public override void OnInspectorGUI()
-    {
-        base.OnInspectorGUI();
-        
-        if (GUILayout.Button("Test Spawn Row"))
-        {
-            ((GroundSpawner)target).SpawnTileRow();
+            var tile = TileFactory.Instance.GetRandomObjectTile();
+            if (tile != null)
+            {
+                tile.transform.SetParent(ObjectParent);
+                tile.transform.position = GetSpawnPosition(i);
+            }
         }
     }
 }
-#endif
+
+
